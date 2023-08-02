@@ -63,7 +63,7 @@
 - name: "load {{ topology_file }}"
   include_vars:
     name: kur
-    dir: "{{ topology_file }}"
+    dir: "/home/vscode/agent/_work/caval6/caval6/landingzones/templates/platform/"
     depth: 1
     ignore_unknown_extensions: true
     files_matching: "caf_platform_prod_nonprod.yaml"
