@@ -60,21 +60,12 @@
     ignore_unknown_extensions: true
     files_matching: "ignite.yaml"
 
-- name: "load {{ topology_file }}"
-  include_vars:
-    name: kur
-    dir: "/home/vscode/agent/_work/caval6/caval6/landingzones/templates/platform/"
-    depth: 1
-    ignore_unknown_extensions: true
-    files_matching: "caf_platform_prod_nonprod.yaml"
-
 - set_fact:
     caf_environment: "{{ TF_VAR_environment }}"
   when: TF_VAR_environment is defined
   
 - set_fact:
-    topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
-#    "{{ lookup('template', 'efs_targets.j2') | from_yaml }}"
+    topology: "{{ lookup('template', '{{ topology_file }}') }}"
 #    topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     destination_path: "{{definition_folder | default(platform_definition_folder)}}"
     resource_template_folder: "{{ public_templates_folder }}/resources"
