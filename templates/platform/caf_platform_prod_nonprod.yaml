@@ -15,12 +15,6 @@
 
 
 
-
-PUBLIC_IP_WHITE_LIST:
-{% for ip in PUBLIC_IP_WHITE_LIST | default([]) %}
-  - {{ ip }}
-{% endfor %}
-
 naming_convention:
   # When set to false use the CAF provider to generate names aligned to CAF guidance
   # true: use the name as defined in the configuration files. You may have to iterate multiple times to prevent conflicts with Azure unique names with servides like storage account, keyvault or log analytics workspace.
