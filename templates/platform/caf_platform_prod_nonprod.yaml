@@ -15,17 +15,6 @@
 
 
 
-naming_convention:
-  # When set to false use the CAF provider to generate names aligned to CAF guidance
-  # true: use the name as defined in the configuration files. You may have to iterate multiple times to prevent conflicts with Azure unique names with servides like storage account, keyvault or log analytics workspace.
-  passthrough: false
-  inherit_tags: false
-  # set: define the prefix to add to all resource names
-  # unset: if passthrough is set to false, generate a random prefix
-  prefix: {{prefix}}
-  # if passthrough is set to false, add random suffix to name, up to the random_lenght value.
-  random_length: 3
-
 caf_launchpad:
   # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
   subscription_id: {{subscription_id.stdout}}
