@@ -13,26 +13,84 @@
 # 
 # 
 
+customer_name: {{customer_name}}
+caf_environment: {{caf_environment}}
+default_email_address: {{default_email_address}}
+alz_mg_prefix: {{alz_mg_prefix}}
+alz_mg_name: {{alz_mg_name}}
+azure_regions: {{azure_regions }}
+prefix: {{prefix}}
 
 
-caf_launchpad:
-  # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
-  subscription_id: {{subscription_id.stdout}}
-  subscription_name: {{subscription_name.stdout}}
-  tenant_id: {{tenant_id.stdout}}
-  global_tags_propagated: yes
-  tags:
-    caf_deployment_mode: demo
+# folder parameters
+{% raw %}
+bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
+landingzones_folder: "{{base_folder}}/landingzones"
+public_templates_folder: "{{base_folder}}/landingzones/templates"
+private_templates_folder: "{{base_folder}}/platform/templates"
+platform_configuration_folder: "{{base_folder}}/platform/configuration"
+platform_definition_folder: "{{base_folder}}/platform/definition"
+platform_template_folder: "{{base_folder}}/platform/template"
+firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
+{% endraw %}
+
+deployment_mode: {{deployment_mode}}
+
+terraform_code_repository: https://github.com/Azure/caf-terraform-landingzones.git
+caf_landingzone_branch: {{caf_landingzone_branch | default('int.5.6.0')}}
+default_rover_image: aztfmod/rover-preview:1.2.3-2206.301920
+# Default image for self-hosted agents
+{% if gitops_pipelines == 'github' %}
+gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-github
+{% elif gitops_pipelines == 'tfcloud' %}
+gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-tfc
+{% endif %}
+
+caf_regions:
+{% for region, location in regions.items() %}
+  {{region}}: {{location}}
+{% endfor %}
+
+# Use the lower-case region's name, short version with no space
+resources_allowed_regions:
+{% for region in regions.keys() %}
+  - {{region}}
+{% endfor %}
+
+resource_groups_allowed_regions:
+{% for region in regions.keys() %}
+  - {{region}}
+{% endfor %}
+
+default_region_key: {{default_region_key}}
+
+# Enable the private dns zones deployment and configure vnets to us the secure firewall for private dns resolutions
+private_endpoints: true
+# Must be set to true for production deployments
+keyvault_purge_protection_enabled: false
+# Configure the launchpad keyvaults to use azure ad authentication when possible.
+keyvault_enable_rbac_authorization: true
+
+# Render the content of the tfvar list across multiple lines
+multiple_lines_list: true
 
 
-azuread_user_ea_account_owner: {{azuread_user_ea_account_owner | default(upn)}}
-ea_owner_object_id: {{ea_owner_object_id | default(object_id)}}
+PUBLIC_IP_WHITE_LIST:
+{% for ip in PUBLIC_IP_WHITE_LIST | default([]) %}
+  - {{ ip }}
+{% endfor %}
 
-azuread_identity_mode: service_principal
-enable_azuread_groups: True
-enable_azuread_applications: True
+naming_convention:
+  # When set to false use the CAF provider to generate names aligned to CAF guidance
+  # true: use the name as defined in the configuration files. You may have to iterate multiple times to prevent conflicts with Azure unique names with servides like storage account, keyvault or log analytics workspace.
+  passthrough: false
+  inherit_tags: false
+  # set: define the prefix to add to all resource names
+  # unset: if passthrough is set to false, generate a random prefix
+  prefix: {{prefix}}
+  # if passthrough is set to false, add random suffix to name, up to the random_lenght value.
+  random_length: 3
 
-enable_azure_subscription_vending_machine: {{bootstrap.enable_azure_subscription_vending_machine | default(bootstrap.enable_azure_subscription_vending_machine)}}
 
 subscription_deployment_mode: {{subscription_deployment_mode | default('single_reuse')}}
 
