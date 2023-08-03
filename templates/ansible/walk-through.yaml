@@ -94,6 +94,7 @@
     msg: 
       - "variables: {{variables}}"
       - "topology: {{topology}}"
+      - "destination_path": {{destination_path}}
 
 - include_tasks: "load_regions.yaml"
   loop: "{{topology.deployments[deployment_mode].keys()}}"
