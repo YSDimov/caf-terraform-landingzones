@@ -47,8 +47,11 @@
 - debug:
     msg:
     - "out: {{ out }}"
-    - "array: {{ out.files | groupby('path') | map(attribute='1.0.path') | dirname | list }}"
+    - "array: {{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
 
+- name: "{{destination_alz_path}} - Set folder array variable"
+  set_fact:
+    folder_list: "{{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
 
 - name: Create needed target dir
   file:
@@ -57,9 +60,9 @@
 
 - name: "Creates directory structure - {{template_lib_folder}}"
   file:
-    path: "{{ destination_alz_path }}/lib/{{ item.path }}"
+    path: "{{ destination_alz_path }}/lib/{{ item | dirname }}"
     state: "{{ item.state }}"
-  loop: "{{ out.files.path }}"
+  loop: "{{ folder_list }}"
   when: item.state == 'directory'
 
 - name: "  Lib"
