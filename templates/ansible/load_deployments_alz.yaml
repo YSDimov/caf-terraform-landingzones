@@ -39,8 +39,8 @@
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
 
 - name: "Creates directory structure - {{template_lib_folder}}"
-  shell: echo "{{ destination_alz_path }}/lib/{{ item.path }}"
-  with_filetree: "{{ template_lib_folder }}"
+  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
+  with_filetree: "platform/level1/alz"
   when: 
     - item.state == 'directory'
 
