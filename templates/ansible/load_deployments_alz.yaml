@@ -32,11 +32,15 @@
     - "tfstate_object: {{resources['alz_' + service].tfstate}}"
     - "mkdir -p {{ destination_alz_path }}/lib/"
 
-#HERE
+- name: "Clean-up destination directory"
+  shell: |
+    rm -rf "{{ destination_alz_path }}"
+  when:
+    - topology.management_groups[region][service].clean_up_destination_folder | default(True)
 
 - name: "Creates directory structure - {{template_lib_folder}}"
   shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
-  with_filetree: "/home/vscode/agent/_work/caval6/caval6/landingzones/templates/platform/level1/alz/lib/v1.1.3/"
+  with_filetree: "{{template_lib_folder}}"
   when: 
     - item.state == 'directory'
 
