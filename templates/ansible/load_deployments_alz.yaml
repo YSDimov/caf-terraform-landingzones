@@ -47,7 +47,7 @@
 - debug:
     msg:
     - "out: {{ out }}"
-    - "array: {{ out.files | groupby('checksum') | map(attribute='1.0.path') | list }}"
+    - "array: {{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
 
 
 - name: Create needed target dir
