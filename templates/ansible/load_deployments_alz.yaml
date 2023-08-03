@@ -6,19 +6,23 @@
     - "{{service}}"
     
 - name: "{{destination_alz_path}} - Set tfstate_object"
+  debug: msg="{{destination_alz_path}}"
   set_fact:
     tfstate_object: "{{resources['alz_' + service].tfstate}}"
 
 - name: "{{destination_path}}/{{stage}} - Set landingzone file_path"
+  debug: msg="{{destination_path}}/{{stage}}"
   set_fact:
     destination_alz_path: "{{destination_path}}/{{stage}}/{{service}}"
     alz_template_folder: "{{public_templates_folder}}/{{ tfstate_object.template_lib_folder}}"
 
 - name: "{{destination_alz_path}} - Set landingzone file_path"
+  debug: msg="{{destination_alz_path}}"
   set_fact:
     template_lib_folder: "{{alz_template_folder}}/lib/{{ tfstate_object.alz_version }}"
 
 - name: "{{destination_alz_path}} - Set landingzone file_path"
+  debug: msg="{{destination_alz_path}}"
   set_fact:
     mg: "{{ lookup('template', '{{ template_lib_folder }}/archetype_config_overrides.caf.platform.yaml') | from_yaml }}"
     mg_custom: "{{ lookup('template', '{{ template_lib_folder }}/custom_landing_zones.caf.platform.yaml') | from_yaml  }}"
@@ -33,6 +37,7 @@
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
 
 - name: "Creates directory structure - {{template_lib_folder}}"
+  debug: msg="{{template_lib_folder}}"
   shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
   with_filetree: "{{ template_lib_folder }}"
   when: 
