@@ -39,10 +39,12 @@
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
 
 - name: "Creates directory structure - {{template_lib_folder}}"
-  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
+  file:
+    path: "{{ destination_alz_path }}/lib/{{ item.path }}"
+    state: directory
+    mode: '{{ item.mode }}'
   with_community.general.filetree: "{{ template_lib_folder }}"
-  when: 
-    - item.state == 'directory'
+  when: item.state == 'directory'
 
 - name: "  Lib"
   ansible.builtin.template:
