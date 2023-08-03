@@ -46,6 +46,7 @@
 - debug:
     msg:
     - "out: {{ out }}"
+    - "array: {{ out.files.path }}"
 
 - name: Create needed target dir
   file:
