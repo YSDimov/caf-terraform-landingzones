@@ -65,7 +65,7 @@
   file:
     path: "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
   loop: "{{ folder_list }}"
-  when: item.isdir == 'True'
+  when: item.isdir == true
 
 - name: "  Lib"
   ansible.builtin.template:
