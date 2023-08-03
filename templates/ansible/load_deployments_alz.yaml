@@ -70,7 +70,7 @@
 - name: "  Lib"
   ansible.builtin.template:
     src: "{{ item.path }}"
-    dest: "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
+    dest: "{{ destination_alz_path }}/lib/{{ item.path | regex_replace(template_lib_folder, '') }}"
     force: yes
   loop: "{{ folder_list }}"
   when: 
@@ -82,7 +82,7 @@
 - name: "  Lib"
   ansible.builtin.template:
     src: "{{ item.path }}"
-    dest: "{{ destination_alz_path }}/{{ item.path | basename }}"
+    dest: "{{ destination_alz_path }}/{{ item.path | regex_replace(template_lib_folder, '') }}"
     force: yes
   loop: "{{ folder_list }}"
   when: 
