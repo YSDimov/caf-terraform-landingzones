@@ -32,21 +32,13 @@
     - "tfstate_object: {{resources['alz_' + service].tfstate}}"
     - "mkdir -p {{ destination_alz_path }}/lib/"
 
-- name: "Clean-up destination directory"
-  shell: |
-    rm -rf "{{ destination_alz_path }}"
-  when:
-    - topology.management_groups[region][service].clean_up_destination_folder | default(True)
+#HERE
 
 - name: "Creates directory structure - {{template_lib_folder}}"
-  vars:
-    file: "{{ item.0 }}"
-    instance: "{{ item.1.value }}"
-  template:
-    src: "{{ template_lib_folder }}/{{ item.path }}"
-    dest: "{{ destination_alz_path }}/lib/{{ item.path }}"
-  loop: "{{ lookup('filetree', "{{ template_lib_folder }}") | product(instances | dict2items) | list }}"
-  when: item.state == 'directory'
+  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
+  with_filetree: "/home/vscode/agent/_work/caval6/caval6/landingzones/templates/platform/level1/alz/lib/v1.1.3/"
+  when: 
+    - item.state == 'directory'
 
 - name: "  Lib"
   ansible.builtin.template:
