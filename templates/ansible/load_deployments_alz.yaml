@@ -62,8 +62,7 @@
     state: "directory"
 
 - name: "Creates directory structure - {{template_lib_folder}}"
-  file:
-    path: "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
+  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
   loop: "{{ folder_list }}"
   when: item.isdir == true
 
