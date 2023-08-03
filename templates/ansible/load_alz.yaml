@@ -3,7 +3,7 @@
     - "{{deployment_mode}}"
     - "{{stage}}"
     - "{{region}}"
-    - "{{service}}"
+    - "{{topology.deployments[deployment_mode][stage][region].keys()}}"
     
 - include_tasks: "load_deployments_alz.yaml"
   loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
