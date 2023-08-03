@@ -42,6 +42,7 @@
     paths: "{{template_lib_folder}}"
     file_type: any
     get_checksum: true
+    recurse: true
   register: out
 
 - debug:
@@ -62,7 +63,7 @@
     state: "directory"
 
 - name: "Creates directory structure - {{template_lib_folder}}"
-  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
+  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path | regex_replace(template_lib_folder, '') }}"
   loop: "{{ folder_list }}"
   when: item.isdir == true
 
