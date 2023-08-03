@@ -71,7 +71,7 @@
     src: "{{ item.src }}"
     dest: "{{ destination_alz_path }}/{{ item.path }}"
     force: yes
-  with_filetree: "{{ template_lib_folder }}"
+  loop: "{{ template_tree }}"
   when: 
     - item.state == 'file'
     - item.path is search(".yaml")
