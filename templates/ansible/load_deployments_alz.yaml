@@ -37,15 +37,7 @@
     rm -rf "{{ destination_alz_path }}"
   when:
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
-
-- name: included block with conditional
-  block:
-    - name: included block task1
-      debug: msg="hello"
-    - name: included block task2
-      debug: msg="{{item}}"
-  when: do_block_logic|bool
-
+    
 - find:
     paths: "{{template_lib_folder}}"
     file_type: directory
