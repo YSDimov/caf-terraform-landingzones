@@ -40,7 +40,7 @@
     
 - find:
     paths: "{{template_lib_folder}}"
-    file_type: directory
+    file_type: any
     get_checksum: true
   register: out
 
@@ -71,9 +71,9 @@
     src: "{{ item.src }}"
     dest: "{{ destination_alz_path }}/lib/{{ item.path }}"
     force: yes
-  loop: "{{ template_tree }}"
+  loop: "{{ folder_list }}"
   when: 
-    - item.state == 'file'
+    - item.isdir == false
     - item.path is not search(".j2")
     - item.path is not search(".yaml") or item.path is search(".json") or item.path is search(".md")
     - topology.management_groups[region][service].update_lib_folder | default(True)
