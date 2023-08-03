@@ -19,7 +19,7 @@ The best course of actions is to follow the readme files generated within each l
 Once you are ready to ingite, just run:
 
 ```bash
-rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
+rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id}}
 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
