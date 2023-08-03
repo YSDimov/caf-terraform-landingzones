@@ -1,6 +1,12 @@
-
+- debug:
+    msg:
+    - "{{deployment_mode}}"
+    - "{{stage}}"
+    - "{{region}}"
+    - "{{service}}"
+    - "{{destination_alz_path}}"
+    
 - include_tasks: "load_deployments_alz.yaml"
-  debug: msg="{{destination_alz_path}}"
   loop: "{{topology.deployments[deployment_mode][stage][region].keys()}}"
   loop_control:
     loop_var: service
