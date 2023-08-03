@@ -30,7 +30,7 @@
     - "template_lib_folder: {{alz_template_folder}}/lib/{{ tfstate_object.alz_version }}"
     - "alz_template_folder: {{public_templates_folder}}/{{ tfstate_object.template_lib_folder}}"
     - "tfstate_object: {{resources['alz_' + service].tfstate}}"
-    - "mkdir -p {{ destination_alz_path }}/lib/{{ item.path }}"
+    - "mkdir -p {{ destination_alz_path }}/lib/"
 
 - name: "Clean-up destination directory"
   shell: |
