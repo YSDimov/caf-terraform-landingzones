@@ -63,9 +63,9 @@
 
 - name: "Creates directory structure - {{template_lib_folder}}"
   file:
-    path: "{{ destination_alz_path }}/lib/{{ item.path | dirname }}"
+    path: "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
   loop: "{{ folder_list }}"
-  when: item.isdir == true
+  when: item.isdir == 'True'
 
 - name: "  Lib"
   ansible.builtin.template:
