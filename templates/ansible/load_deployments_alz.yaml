@@ -47,7 +47,6 @@
 - debug:
     msg:
     - "out: {{ out }}"
-    - "test: {{ out.files.path | list }}"
     - "test1: {{ out.files | list }}"
     - "test2: {{ out.files }}"
     - "array: {{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
