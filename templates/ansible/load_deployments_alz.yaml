@@ -40,7 +40,11 @@
 
 - name: Get list of folders only once
   set_fact:
-    template_tree: "{{ query('filetree', template_lib_folder ~ template_pattern.name ~ '/') }}"
+    template_tree: "{{ query('filetree', template_lib_folder ~ (tfstate_object.alz_version).name ~ '/') }}"
+
+- debug:
+    msg:
+    - "template_tree: {{ template_tree }}"
 
 - name: Create needed target dir
   file:
