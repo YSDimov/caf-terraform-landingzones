@@ -46,7 +46,9 @@
 - debug:
     msg:
     - "out: {{ out }}"
-    - "array: {{ out.files.path }}"
+    - "array: {{ out.files|groupby('checksum')|
+                                map(attribute='1.0.path')|
+                                list }}"
 
 - name: Create needed target dir
   file:
@@ -57,7 +59,7 @@
   file:
     path: "{{ destination_alz_path }}/lib/{{ item.path }}"
     state: "{{ item.state }}"
-  loop: "{{ template_tree }}"
+  loop: "{{ out.files.path }}"
   when: item.state == 'directory'
 
 - name: "  Lib"
