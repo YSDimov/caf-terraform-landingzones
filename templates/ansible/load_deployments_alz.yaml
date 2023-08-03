@@ -41,6 +41,7 @@
 - find:
     paths: "{{template_lib_folder}}"
     file_type: directory
+    get_checksum: true
   register: out
 
 - debug:
