@@ -59,13 +59,12 @@
     src: "{{ item.src }}"
     dest: "{{ destination_alz_path }}/lib/{{ item.path }}"
     force: yes
-  with_filetree: "{{ template_lib_folder }}"
+  loop: "{{ template_tree }}"
   when: 
     - item.state == 'file'
     - item.path is not search(".j2")
     - item.path is not search(".yaml") or item.path is search(".json") or item.path is search(".md")
     - topology.management_groups[region][service].update_lib_folder | default(True)
-
 
 - name: "  Lib"
   ansible.builtin.template:
