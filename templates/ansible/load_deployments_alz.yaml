@@ -38,11 +38,21 @@
   when:
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
 
+- name: Get list of folders only once
+  set_fact:
+    template_tree: "{{ query('filetree', {{ template_tree }} ~ template_pattern.name ~ '/') }}"
+
+- name: Create needed target dir
+  file:
+    path: "{{ destination_alz_path }}/lib"
+    state: "directory"
+
 - name: "Creates directory structure - {{template_lib_folder}}"
-  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
-  with_filetree: "{{template_lib_folder}}"
-  when: 
-    - item.state == 'directory'
+  file:
+    path: "{{ destination_alz_path }}/lib/{{ item.path }}"
+    state: "{{ item.state }}"
+  loop: "{{ template_tree }}"
+  when: item.state == 'directory'
 
 - name: "  Lib"
   ansible.builtin.template:
