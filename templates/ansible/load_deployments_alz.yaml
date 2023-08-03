@@ -48,12 +48,12 @@
     msg:
     - "out: {{ out }}"
     - "test1: {{ out.files | list }}"
-    - "test2: {{ out.files[path] }}"
+    - "test2: {{ out.files | to_json }}"
     - "array: {{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
 
 - name: "{{destination_alz_path}} - Set folder array variable"
   set_fact:
-    folder_list: "{{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
+    folder_list: "{{ out.files }}"
 
 - name: Create needed target dir
   file:
