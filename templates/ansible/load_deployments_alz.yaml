@@ -38,13 +38,22 @@
   when:
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
 
-- name: Get list of folders only once
-  set_fact:
-    template_tree: "{{ query('filetree', template_lib_folder ~ tfstate_object.alz_version ~ '/') }}"
+- name: included block with conditional
+  block:
+    - name: included block task1
+      debug: msg="hello"
+    - name: included block task2
+      debug: msg="{{item}}"
+  when: do_block_logic|bool
+
+- find:
+    paths: "{{template_lib_folder}}"
+    file_type: directory
+  register: out
 
 - debug:
     msg:
-    - "template_tree: {{ template_tree }}"
+    - "out: {{ out }}"
 
 - name: Create needed target dir
   file:
