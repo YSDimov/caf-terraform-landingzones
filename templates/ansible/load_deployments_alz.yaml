@@ -6,18 +6,15 @@
     - "{{service}}"
     
 - name: "{{destination_alz_path}} - Set tfstate_object"
-  debug: msg="{{destination_alz_path}}"
   set_fact:
     tfstate_object: "{{resources['alz_' + service].tfstate}}"
 
 - name: "{{destination_path}}/{{stage}} - Set landingzone file_path"
-  debug: msg="{{destination_path}}/{{stage}}"
   set_fact:
     destination_alz_path: "{{destination_path}}/{{stage}}/{{service}}"
     alz_template_folder: "{{public_templates_folder}}/{{ tfstate_object.template_lib_folder}}"
 
 - name: "{{destination_alz_path}} - Set landingzone file_path"
-  debug: msg="{{destination_alz_path}}"
   set_fact:
     template_lib_folder: "{{alz_template_folder}}/lib/{{ tfstate_object.alz_version }}"
 
