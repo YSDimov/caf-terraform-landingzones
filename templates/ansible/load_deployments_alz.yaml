@@ -68,8 +68,8 @@
 
 - name: "  Lib"
   ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ destination_alz_path }}/lib/{{ item.path }}"
+    src: "{{ item.path }}"
+    dest: "{{ destination_alz_path }}/lib/{{ item.path | basename }}"
     force: yes
   loop: "{{ folder_list }}"
   when: 
@@ -80,12 +80,12 @@
 
 - name: "  Lib"
   ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ destination_alz_path }}/{{ item.path }}"
+    src: "{{ item.path }}"
+    dest: "{{ destination_alz_path }}/{{ item.path | basename }}"
     force: yes
-  loop: "{{ template_tree }}"
+  loop: "{{ folder_list }}"
   when: 
-    - item.state == 'file'
+    - item.isdir == false
     - item.path is search(".yaml")
     - topology.management_groups[region][service].update_lib_folder | default(True)
 
