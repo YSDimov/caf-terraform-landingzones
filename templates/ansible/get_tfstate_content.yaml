@@ -58,8 +58,8 @@
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
- - debug:
-     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
+- debug:
+    msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
 
 - name: "Get {{tfstate_key_name}} json data"
   when:
