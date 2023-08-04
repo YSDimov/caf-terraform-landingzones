@@ -57,7 +57,7 @@
     - "{{ tfstate_key_name }}"
     - "{{ resource_type }}"
     - 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
-    - "{{ jsondata | community.general.json_query('outputs')}}"
+    - "{{ jsondata }}"
 
 - name: "Set {{exported_variable_name}}"
   when:
