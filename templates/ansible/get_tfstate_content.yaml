@@ -20,9 +20,6 @@
 - set_fact:
     "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"
 
-- debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_storage_account')}}"
-
 - name: "[Get subscription details for {{ tfstate_obj.tfstate }} }}"
   register: tfstate_exists
   ignore_errors: true
@@ -37,17 +34,11 @@
 - set_fact:
     "{{tfstate_key_name}}_tfstate_exists": "{{ lookup('vars', 'tfstate_exists') }}"
 
-- debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_tfstate_exists')}}"
-
 - name: "Get {{tfstate_key_name}} details from tfstate"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
   shell: "cat {{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
   register: "tfstate_file"
-
-- debug:
-    msg: "{{lookup('vars', 'tfstate_file')}}"
 
 - set_fact:
     "{{tfstate_key_name}}_tfstate": "{{ lookup('vars', 'tfstate_file') }}"
@@ -55,10 +46,10 @@
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
 - debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
+    msg: "{{lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0)}}"
 
 - debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_storage_account')}}"
+    msg: "{{lookup('vars', tfstate_key_name + '_storage_account').rc == 0)}}"
 
 - name: "Get {{tfstate_key_name}} json data"
   when:
