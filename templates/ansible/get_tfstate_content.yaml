@@ -55,7 +55,9 @@
 - debug:
     msg:
     - "{{ tfstate_key_name }}"
-    - "{{ jsondata | default({}) | json_query(outputs.objects.value)}}"
+    - "{{ resource_type }}"
+    - 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+    - "{{ jsondata | json_query(outputs.objects)}}"
 
 - name: "Set {{exported_variable_name}}"
   when:
