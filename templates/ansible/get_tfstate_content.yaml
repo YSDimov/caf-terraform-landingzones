@@ -46,12 +46,6 @@
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
 - debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0)}}"
-
-- debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_storage_account').rc == 0)}}"
-
-- debug:
     msg: "{{ lookup('vars', tfstate_key_name + '_tfstate').stdout | from_json }}"
 
 - name: "Get {{tfstate_key_name}} json data"
