@@ -45,15 +45,17 @@
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
-- debug:
-    msg: "{{ lookup('vars', tfstate_key_name + '_tfstate').stdout | from_json }}"
-
 - name: "Get {{tfstate_key_name}} json data"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_storage_account').rc == 0
   set_fact:
     jsondata: "{{ lookup('vars', tfstate_key_name + '_tfstate').stdout | from_json }}"
+
+- debug:
+    msg:
+    - "{{ tfstate_key_name }}"
+    - "{{ jsondata | default({}) | json_query(outputs.objects.value)}}"
 
 - name: "Set {{exported_variable_name}}"
   when:
