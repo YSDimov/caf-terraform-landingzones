@@ -41,19 +41,25 @@
 - set_fact:
     "{{tfstate_key_name}}_tfstate_exists": "{{ lookup('vars', 'tfstate_exists') }}"
 
+ - debug:
+     msg: "{{lookup('vars', tfstate_key_name + '_tfstate_exists')}}"
+
 - name: "Get {{tfstate_key_name}} details from tfstate"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
   shell: "cat {{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
   register: "tfstate_file"
 
+- debug:
+    msg: "{{tfstate_file}}"
+
 - set_fact:
     "{{tfstate_key_name}}_tfstate": "{{ lookup('vars', 'tfstate_file') }}"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
-# - debug:
-#     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
+ - debug:
+     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
 
 - name: "Get {{tfstate_key_name}} json data"
   when:
