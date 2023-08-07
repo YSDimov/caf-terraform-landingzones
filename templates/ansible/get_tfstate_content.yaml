@@ -136,7 +136,7 @@
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_tfstate')
     - resource_key is defined
-    - env != ''
+    - env == ''
   set_fact:
     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True )) }}"
   with_together:
