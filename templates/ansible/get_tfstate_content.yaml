@@ -35,9 +35,6 @@
       --auth-mode "login" \
       --file "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}" 
 
-- set_fact:
-    "{{tfstate_key_name}}_tfstate_exists": "{{ lookup('vars', 'tfstate_exists') }}"
-
 - name: "Get {{tfstate_key_name}} details from tfstate"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
@@ -58,6 +55,10 @@
 
 - debug:
     msg:
+    - "{{ tfstate_obj.tfstate }}"
+    - "{{ lookup('vars', tfstate_key_name + '_storage_account').stdout }}"
+    - "{{ tfstate_obj.workspace | default('tfstate') }}"
+    - "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}
     - "{{ tfstate_key_name }}"
     - "{{ resource_type }}"
     - 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
