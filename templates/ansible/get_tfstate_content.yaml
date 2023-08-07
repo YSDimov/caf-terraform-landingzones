@@ -131,8 +131,8 @@
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 # DEBUG TODO replaced env with env_var at when
-#- set_fact:
-#    "resource_key": "{{resource_key | default('resource_key is undefined')}}"
+- set_fact:
+    "resource_key": "{{resource_key | default('none')}}"
     
 - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
   when:
@@ -146,7 +146,6 @@
     - ["{{env}}"]
     - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
-    resource_key: "{{resource_key | default('none')}}"
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
