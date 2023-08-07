@@ -4,6 +4,14 @@
       - "exported_variable_name: '{{exported_variable_name}}'"
       - "resource_key: '{{resource_key | default('')}}'"
 
+- name: Check version of community.general
+  ansible.builtin.debug:
+    msg: "community.general version {{ lookup('community.general.collection_version', 'community.general') }}"
+- name: Create a file of 1k filled with null bytes
+  community.general.filesize:
+    path: /tmp/myfile
+    size: 1k
+
 - set_fact:
     tfstate_obj: "{{resources.tfstates.platform[tfstate_key] if env == '' else resources.tfstates.platform[tfstate_key][env]}}"
     tfstate_key_name: "{{resources.tfstates.platform[tfstate_key].lz_key_name if env == '' else resources.tfstates.platform[tfstate_key][env].lz_key_name}}"
