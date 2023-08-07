@@ -877,11 +877,6 @@ launchpad:
             level0:
               name: level0
               cidr: ["10.100.0.0/27"]
-              delegation:
-                name: Microsoft.ContainerInstance/containerGroups
-                service_delegation: Microsoft.ContainerInstance/containerGroups
-                actions:
-                  - Microsoft.Network/virtualNetworks/subnets/action
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
@@ -909,6 +904,20 @@ launchpad:
             credentials:
               name: credentials
               cidr: ["10.100.0.96/27"]
+              service_endpoints:
+                - Microsoft.KeyVault
+                - Microsoft.Storage
+{% if private_endpoints is defined %}
+              enforce_private_link_endpoint_network_policies: true
+{% endif %}
+            level0-aci:
+              name: level0-aci
+              cidr: ["10.100.0.128/27"]
+              delegation:
+                name: Microsoft.ContainerInstance/containerGroups
+                service_delegation: Microsoft.ContainerInstance/containerGroups
+                actions:
+                  - Microsoft.Network/virtualNetworks/subnets/action
               service_endpoints:
                 - Microsoft.KeyVault
                 - Microsoft.Storage
