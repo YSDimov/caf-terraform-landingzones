@@ -2,7 +2,7 @@
     msg: 
       - "env: '{{env}}'"
       - "exported_variable_name: {{exported_variable_name}}"
-      - "resource_key: '{{resource_key}}'"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 - name: Print message if ansible version is greater than 2.7.0
   debug:
@@ -70,7 +70,7 @@
     msg: 
       - "env: '{{env}}'"
       - "exported_variable_name: {{exported_variable_name}}"
-      - "resource_key: '{{resource_key}}'"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 - name: "Set {{exported_variable_name}}"
   when:
@@ -87,7 +87,7 @@
     msg: 
       - "env: '{{env}}'"
       - "exported_variable_name: {{exported_variable_name}}"
-      - "resource_key: '{{resource_key}}'"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 - name: "Set {{exported_variable_name}} with env:{{env}} - no resource_key"
   when:
@@ -107,7 +107,7 @@
     msg: 
       - "env: '{{env}}'"
       - "exported_variable_name: {{exported_variable_name}}"
-      - "resource_key: '{{resource_key}}'"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 - name: "Set {{exported_variable_name}} - (with resource_key: {{resource_key}})"
   when:
@@ -124,7 +124,7 @@
     msg: 
       - "env: '{{env}}'"
       - "exported_variable_name: {{exported_variable_name}}"
-      - "resource_key: '{{resource_key}}'"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
   when:
