@@ -1,8 +1,8 @@
 - debug:
     msg: 
       - "env: '{{env}}'"
-      - "exported_variable_name: '{{exported_variable_name}}'"
-      - "resource_key: '{{resource_key | default('')}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key}}'"
 
 - name: Print message if ansible version is greater than 2.7.0
   debug:
@@ -66,6 +66,12 @@
     - "{{ resource_type }}"
     - 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
 
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key}}'"
+
 - name: "Set {{exported_variable_name}}"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
@@ -76,6 +82,12 @@
     "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key}}'"
 
 - name: "Set {{exported_variable_name}} with env:{{env}} - no resource_key"
   when:
@@ -91,6 +103,12 @@
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
 
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key}}'"
+
 - name: "Set {{exported_variable_name}} - (with resource_key: {{resource_key}})"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
@@ -102,6 +120,11 @@
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key}}'"
 
 - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
   when:
