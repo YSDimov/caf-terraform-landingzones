@@ -58,7 +58,7 @@
     - "{{ tfstate_obj.tfstate }}"
     - "{{ lookup('vars', tfstate_key_name + '_storage_account').stdout }}"
     - "{{ tfstate_obj.workspace | default('tfstate') }}"
-    - "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}
+    - "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
     - "{{ tfstate_key_name }}"
     - "{{ resource_type }}"
     - 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
