@@ -131,11 +131,14 @@
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 # DEBUG TODO replaced env with env_var at when
+#- set_fact:
+#    "resource_key": "{{resource_key | default('resource_key is undefined')}}"
+    
 - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_tfstate')
-    - resource_key is defined
+    - resource_key != 'none'
     - env_var != ''
   set_fact:
     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True )) }}"
@@ -143,6 +146,7 @@
     - ["{{env}}"]
     - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
+    resource_key: "{{resource_key | default('none')}}"
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
