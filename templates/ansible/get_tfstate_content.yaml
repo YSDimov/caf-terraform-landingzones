@@ -69,6 +69,7 @@
 - debug:
     msg: 
       - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
       - "exported_variable_name: {{exported_variable_name}}"
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
@@ -86,6 +87,7 @@
 - debug:
     msg: 
       - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
       - "exported_variable_name: {{exported_variable_name}}"
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
@@ -106,6 +108,7 @@
 - debug:
     msg: 
       - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
       - "exported_variable_name: {{exported_variable_name}}"
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
@@ -123,6 +126,7 @@
 - debug:
     msg: 
       - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
       - "exported_variable_name: {{exported_variable_name}}"
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
