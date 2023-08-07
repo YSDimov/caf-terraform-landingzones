@@ -3,19 +3,12 @@
 
 # Initial load
 
-- debug:
-    msg:
-    - "yaml_files_to_process: {{yaml_files_to_process.files}}"
 
 - name: load variables
   set_fact:
     merged_resource__to_merge: "{{ merged_resource__to_merge | default({}) | combine( lookup('template', item.path ) | from_yaml )}}"
   with_items: "{{yaml_files_to_process.files}}"
   when: deployment_mode == 'platform'
-
-- debug:
-    msg:
-    - "merged_resource__to_merge: {{ merged_resource__to_merge }}"
 
 - name: Merge resources variables
   merge_vars:
