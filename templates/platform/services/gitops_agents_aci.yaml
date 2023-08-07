@@ -111,4 +111,4 @@ gitops_agents:
                 name: ipconfig
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level0
+                subnet_key: level0-aci
