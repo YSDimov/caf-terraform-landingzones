@@ -12,7 +12,9 @@
         multiple_lines_list: "{{ multiple_lines_list | default(false) }}"
 
     - debug:
-        msg: "platform_service_folder is: {{platform_service_folder}}"
+        msg:
+        - "platform_service_folder is: {{platform_service_folder}}"
+        - "deployment_mode: {{ deployment_mode }}"
 
     - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
       include_vars:
