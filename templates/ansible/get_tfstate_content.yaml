@@ -130,10 +130,11 @@
       - "exported_variable_name: {{exported_variable_name}}"
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
+# DEBUG TODO replaced env with env_var at when
 - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
   when:
     - resource_key is defined
-    - env != ''
+    - env_var != ''
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_tfstate')
   set_fact:
