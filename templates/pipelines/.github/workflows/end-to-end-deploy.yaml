@@ -56,11 +56,8 @@ jobs:
 
   configuration_updates:
     name: Generate configuration tfvars files
-    runs-on: [self-hosted, platform]
 
-    permissions:
-      id-token: write
-      contents: write
+    permissions: write-all
       
     needs: [environment]
     uses: ./.github/workflows/generate-configuration-files.yaml
