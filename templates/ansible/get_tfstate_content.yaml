@@ -73,6 +73,10 @@
       - "exported_variable_name: {{exported_variable_name}}"
       - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
+# TODO missing general plugin ansible-galaxy collection install community.general
+#TASK [Set launchpad_azuread_groups] ********************************************
+#fatal: [localhost]: FAILED! => {"msg": "template error while templating string: Could not load \"json_query\": 'Invalid plugin FQCN (community.general.json_query): unable to locate collection community.general'. String: {{ jsondata | default({}) | json_query(path)}}. Could not load \"json_query\": 'Invalid plugin FQCN (community.general.json_query): unable to locate collection community.general'"}
+
 - name: "Set {{exported_variable_name}}"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
