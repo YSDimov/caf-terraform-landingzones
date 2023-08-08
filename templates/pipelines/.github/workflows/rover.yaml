@@ -85,7 +85,11 @@ on:
         required: true
       AZURE_TARGET_SUBSCRIPTION_ID:
         required: true
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+        required: true
 
+# TODO added param AZURE_MANAGEMENT_SUBSCRIPTION_ID
+# TODO Azure Login hardcoded values because secrets are not passed to forked projects
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -104,9 +108,9 @@ jobs:
       - name: 'Azure Login'
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+          client-id: '5fcf837e-fc34-4676-b6ac-cbcc9160af95'
+          tenant-id: '0b59ee2f-6c31-407a-bcc4-6fd1da6ddf6b'
+          subscription-id: 'a2ec4c01-7772-4954-a7b2-e03a5ee4ef33'
 
       - name: Checkout Configuration
         uses: actions/checkout@v3
