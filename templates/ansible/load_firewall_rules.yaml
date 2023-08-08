@@ -49,7 +49,8 @@
     msg: 
       - "fw_rules_network_rule_collections: {{fw_rules_network_rule_collections}}"
       - "fw_rules_nat_rule_collections: {{fw_rules_nat_rule_collections}}"
-      - "vnet_launchpad {{ vnet_launchpad}}"
+      - "vnet_launchpad: '{{vnet_launchpad | default('vnet_launchpad is undefined')}}'"
+      - "vnet_asvm: '{{vnet_asvm | default('vnet_asvm is undefined')}}'"
 
 - name: load firewall network_rule_collections
   set_fact:
