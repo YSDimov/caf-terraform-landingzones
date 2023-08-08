@@ -34,14 +34,7 @@
   register: public_ip
 
 - set_fact:
-    PUBLIC_IP_WHITE_LIST_INPUT:
-    - "20.224.150.242"
-    - "46.238.8.112"
-    - "0.0.0.0/0"
-
-- set_fact:
-    PUBLIC_IP_WHITE_LIST_INPUT: "{{ PUBLIC_IP_WHITE_LIST_INPUT }}"
-  when: PUBLIC_IP_WHITE_LIST_INPUT is defined
+    PUBLIC_IP_WHITE_LIST_INPUT: "{{ PUBLIC_IP_WHITE_LIST_INPUT | default([]) + ['20.224.150.242', '46.238.8.112', '0.0.0.0/0'] }}"
 
 - set_fact:
     regions:  "{{ azure_regions }}"
@@ -50,7 +43,7 @@
     upn: "{{ upn_owner | default(bash_upn.stdout) }}"
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
-    PUBLIC_IP_WHITE_LIST: "{{ PUBLIC_IP_WHITE_LIST_INPUT | combine(PUBLIC_IP_WHITE_LIST, list_merge='append') }}" #PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
+    PUBLIC_IP_WHITE_LIST: "{{ public_ip + ['20.224.150.242', '46.238.8.112', '0.0.0.0/0'] }}" #PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
 
 - debug:
     msg:
