@@ -10,9 +10,16 @@ on:
     branches:
       - bootstrap
 
+# TODO verify permissions
+#permissions:
+#  id-token: write
+#  contents: read
 permissions:
   id-token: write
-  contents: read
+  contents: write
+  issues: write
+  pull-requests: write
+
 {% raw %}
 concurrency: 
   group: ${{ github.ref }}
@@ -52,6 +59,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
       AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
     with:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
@@ -76,6 +84,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
       AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
     with:
       terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
       terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
