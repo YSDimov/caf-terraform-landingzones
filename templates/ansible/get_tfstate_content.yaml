@@ -150,7 +150,7 @@
     - ["{{env}}"]
     - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
-    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key_tmp}}'
+    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:
