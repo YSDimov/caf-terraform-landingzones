@@ -46,6 +46,9 @@ on:
       RUNNER_NUMBERS:
         required: true
 
+# TODO permission validation
+# TODO ansible vars
+# TODO PR params
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -58,6 +61,11 @@ jobs:
   rover:
     name: Generate configuration files
     runs-on: [self-hosted, platform]
+    permissions:
+      id-token: write
+      contents: write
+      issues: write
+      pull-requests: write
     
     steps:
       
@@ -100,10 +108,20 @@ jobs:
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
-            -e base_folder=$(pwd) \
+            --extra-vars AZURE_OBJECT_ID=1587224f-d90e-4a02-b6bd-decbc1f9129e \
+            --extra-vars "upn_owner=ysdimov.test3_outlook.com#EXT#@ysdimovtest3outlook.onmicrosoft.com" \
+            --extra-vars tenant_name=ysdimovtest3outlook.onmicrosoft.com \
+            --extra-vars tenant_id=0b59ee2f-6c31-407a-bcc4-6fd1da6ddf6b \
+            --extra-vars subscription_id=a2ec4c01-7772-4954-a7b2-e03a5ee4ef33 \
+            --extra-vars "subscription_name=Azure subscription 1" \
+            -e topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
+            -e gitops_pipelines=github \
+            -e gitops_agent=github \
             -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
-            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
-            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+            -e GITHUB_SERVER_URL=https://github.com \
+            -e GITHUB_REPOSITORY=YSDimov/caval6 \
+            -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
+            -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
             -e sub_management=${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} \
             -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }} \
@@ -111,6 +129,7 @@ jobs:
             -e sub_security=${{secrets.AZURE_SECURITY_SUBSCRIPTION_ID}} \
             -e TF_VAR_environment=${{ inputs.environment }} \
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
+            -e base_folder=$(pwd) \
             -e template_folder="$(pwd)/platform/definition"
 
 
@@ -121,13 +140,23 @@ jobs:
           git config user.email "github-actions@github.com"
 
           git checkout -b end2end
+          echo "git add ."
           git add .
+          echo "pre-commit"
           pre-commit
+          echo "git commit -am"
           git commit -am "Update definition files."
-
+          
+          echo "git remote -v"
           git remote -v
 
+          echo "GITHUB_HEAD_REF"
           echo ${GITHUB_HEAD_REF}
+          # warning: slow
+          gh api graphql -f query='query($endCursor:String){repository(owner:"YSDimov",name:"caval6"){assignableUsers(first:100,after:$endCursor){nodes{login}pageInfo{endCursor,hasNextPage}}}}' --paginate --jq '.data.repository.assignableUsers.nodes[].login' #| tee assignable-azure.txt
+          
+          echo "git status --porcelain"
+          echo "$(git status --porcelain)"
           
           if [ -z "$(git status --porcelain)" ];
           then
@@ -139,10 +168,9 @@ jobs:
           fi
 
           /usr/bin/gh pr create \
-            --assignee "@me" \
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base bootstrap \
-            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+            -R "YSDimov/caval6" --head end2end
         
 {% endraw %}
