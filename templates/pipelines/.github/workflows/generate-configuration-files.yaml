@@ -64,7 +64,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
-          token: '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'
+          token: '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'
 
       - name: 'Azure Login'
         uses: azure/login@v1
