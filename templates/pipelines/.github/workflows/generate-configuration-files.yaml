@@ -29,6 +29,8 @@ on:
         required: true
       AZURE_TARGET_SUBSCRIPTION_ID:
         required: true
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+        required: false
       RUNNER_REGISTRATION_TOKEN:
         required: true
       RUNNER_NUMBERS:
@@ -36,6 +38,12 @@ on:
       AZURE_OBJECT_ID:
         required: true
 
+# TODO added missing var AZURE_MANAGEMENT_SUBSCRIPTION_ID
+# TODO priviliges must be reduced
+# TODO token hard coded on checkout action because secrets are not pulled in forked repos
+
+
+permissions: write-all
 
 env:
   TF_CLI_ARGS: '-no-color'
@@ -56,6 +64,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          token: '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'
 
       - name: 'Azure Login'
         uses: azure/login@v1
