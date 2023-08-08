@@ -49,6 +49,7 @@
     msg: 
       - "fw_rules_network_rule_collections: {{fw_rules_network_rule_collections}}"
       - "fw_rules_nat_rule_collections: {{fw_rules_nat_rule_collections}}"
+      - "vnet_launchpad {{ vnet_launchpad}}"
 
 - name: load firewall network_rule_collections
   set_fact:
