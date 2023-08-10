@@ -39,4 +39,6 @@ azure_firewall_management:
         https:
           port: 80
           type: Http
+{% else %}
+    []
 {% endif %}
