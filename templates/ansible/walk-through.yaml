@@ -58,8 +58,6 @@
       - "PUBLIC_IP_WHITE_LIST: {{ PUBLIC_IP_WHITE_LIST }}"
       - "tenant_name: {{ tenant_name }}"
       - "{{ base_folder }}"
-      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
-
 
 - name: "load {{ template_folder | default(platform_definition_folder)}}/ignite.yaml"
   include_vars:
@@ -72,7 +70,15 @@
 - set_fact:
     caf_environment: "{{ TF_VAR_environment }}"
   when: TF_VAR_environment is defined
-  
+
+- debug:
+    msg:
+      - "{{ base_folder }}"
+      - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
+      - "topology_file: {{ topology_file }}"
+      - "platform_definition_folder: {{ platform_definition_folder }}"
+      - "public_templates_folder: {{ public_templates_folder }}"
+
 - set_fact:
     topology: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
     topology_deployment__to_merge: "{{ lookup('template', '{{ topology_file }}') | from_yaml }}"
