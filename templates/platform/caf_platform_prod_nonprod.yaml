@@ -35,12 +35,13 @@ firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
 
 deployment_mode: {{deployment_mode}}
 
-terraform_code_repository: https://github.com/Azure/caf-terraform-landingzones.git
-caf_landingzone_branch: {{caf_landingzone_branch | default('int.5.6.0')}}
-default_rover_image: aztfmod/rover-preview:1.2.3-2206.301920
+# TODO image version and branch
+terraform_code_repository: https://github.com/YSDimov/caf-terraform-landingzones.git
+caf_landingzone_branch: {{caf_landingzone_branch | default('ysd-5.7.2')}}
+default_rover_image: aztfmod/rover:1.5.4-2307.2804
 # Default image for self-hosted agents
 {% if gitops_pipelines == 'github' %}
-gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-github
+gitops_default_rover_image: aztfmod/rover-agent:1.5.4-2307.2804-github
 {% elif gitops_pipelines == 'tfcloud' %}
 gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-tfc
 {% endif %}
@@ -89,6 +90,7 @@ naming_convention:
   # if passthrough is set to false, add random suffix to name, up to the random_lenght value.
   random_length: 3
 
+# TODO .stdout removedfrom vars
 caf_launchpad:
   # Subscription_id to deploy the launchpad. Note 1 existing manual subscription is required to deploy the launhchapd.
   subscription_id: {{subscription_id}}
