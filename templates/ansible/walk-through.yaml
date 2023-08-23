@@ -53,8 +53,10 @@
     msg:
       - "{{ regions }}"
       - "{{ customer_name }}"
-      #- "objectid: {{ object_id }}"
-      #- "{{ upn }}"
+      - "objectid: {{ object_id }}"
+      - "upn: {{ upn }}"
+      - "PUBLIC_IP_WHITE_LIST: {{ PUBLIC_IP_WHITE_LIST }}"
+      - "tenant_name: {{ tenant_name }}"
       - "{{ base_folder }}"
       - "{{ input_caf_environment if input_caf_environment is defined else TF_VAR_environment }}"
 
