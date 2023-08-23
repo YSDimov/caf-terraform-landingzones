@@ -96,6 +96,10 @@
 #
 # Load the files into variables
 #
+
+#
+# Load the files into variables
+#
 - name: "load _variables files"
   include_vars:
     name: variables
