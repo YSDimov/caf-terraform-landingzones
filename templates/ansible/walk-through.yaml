@@ -33,12 +33,19 @@
   shell: dig @resolver1.opendns.com A myip.opendns.com +short -4
   register: public_ip
 
+- debug:
+    msg:
+      - "public_ip: {{ public_ip }}"
+      - "AZURE_OBJECT_ID: {{ AZURE_OBJECT_ID }}"
+      - "upn_owner: {{ upn_owner }}"
+      - "tenant_name: {{ tenant_name }}"
+
 - set_fact:
     regions:  "{{ azure_regions }}"
     deployment_mode: "platform"
     #object_id: "{{ bash_object_id.stdout | default(AZURE_OBJECT_ID) }}" # TODO provide custom id
     #upn: "{{ upn_owner | default(bash_upn.stdout) }}"
-    tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
+    #tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
     #PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout, '0.0.0.0/0'] }}" #TODO PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
 
