@@ -17,9 +17,9 @@ Please note that during the creation of the platform landingones you will have t
 The best course of actions is to follow the readme files generated within each landing zones, as rover ignite creates the tfvars and also the documentation.
 
 Once you are ready to ingite, just run:
-
+# TODO rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
 ```bash
-rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
+rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id}}
 
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
   --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
