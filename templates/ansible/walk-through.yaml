@@ -40,7 +40,7 @@
     #upn: "{{ upn_owner | default(bash_upn.stdout) }}"
     tenant_name: "{{ tenant_name | default(bash_tenant_name.stdout) }}"
     base_folder: "{{ base_folder | default('/tf/caf') }}"
-    PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout, '0.0.0.0/0'] }}" #TODO PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
+    #PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout, '0.0.0.0/0'] }}" #TODO PUBLIC_IP_WHITE_LIST: "{{ [public_ip.stdout] }}"
 
 - debug:
     msg:
