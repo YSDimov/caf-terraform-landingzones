@@ -24,41 +24,69 @@
     mg_custom: "{{ lookup('template', '{{ template_lib_folder }}/custom_landing_zones.caf.platform.yaml') | from_yaml  }}"
 
 - debug:
-    msg: "{{destination_alz_path}}"
+    msg:
+    - "tfstate_object: {{resources['alz_' + service].tfstate}}"
+    - "destination_alz_path: {{destination_path}}/{{stage}}/{{service}}"
+    - "template_lib_folder: {{alz_template_folder}}/lib/{{ tfstate_object.alz_version }}"
+    - "alz_template_folder: {{public_templates_folder}}/{{ tfstate_object.template_lib_folder}}"
+    - "tfstate_object: {{resources['alz_' + service].tfstate}}"
+    - "mkdir -p {{ destination_alz_path }}/lib/"
 
 - name: "Clean-up destination directory"
   shell: |
     rm -rf "{{ destination_alz_path }}"
   when:
     - topology.management_groups[region][service].clean_up_destination_folder | default(True)
+    
+- find:
+    paths: "{{template_lib_folder}}"
+    file_type: any
+    get_checksum: true
+    recurse: true
+  register: out
+
+- debug:
+    msg:
+    - "out: {{ out }}"
+    - "test1: {{ out.files | list }}"
+    - "test2: {{ out.files | to_json }}"
+    - "test3: {{ out.files[0] }}"
+    - "array: {{ out.files | groupby('path') | map(attribute='1.0.path') | list }}"
+
+- name: "{{destination_alz_path}} - Set folder array variable"
+  set_fact:
+    folder_list: "{{ out.files }}"
+
+- name: Create needed target dir
+  file:
+    path: "{{ destination_alz_path }}/lib"
+    state: "directory"
 
 - name: "Creates directory structure - {{template_lib_folder}}"
-  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path }}"
-  with_filetree: "{{ template_lib_folder }}"
-  when: 
-    - item.state == 'directory'
+  shell: mkdir -p "{{ destination_alz_path }}/lib/{{ item.path | regex_replace(template_lib_folder, '') }}"
+  loop: "{{ folder_list }}"
+  when: item.isdir == true
 
 - name: "  Lib"
   ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ destination_alz_path }}/lib/{{ item.path }}"
+    src: "{{ item.path }}"
+    dest: "{{ destination_alz_path }}/lib/{{ item.path | regex_replace(template_lib_folder, '') }}"
     force: yes
-  with_filetree: "{{ template_lib_folder }}"
+  loop: "{{ folder_list }}"
   when: 
-    - item.state == 'file'
+    - item.isdir == false
     - item.path is not search(".j2")
     - item.path is not search(".yaml") or item.path is search(".json") or item.path is search(".md")
     - topology.management_groups[region][service].update_lib_folder | default(True)
 
-
 - name: "  Lib"
   ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ destination_alz_path }}/{{ item.path }}"
+    src: "{{ item.path }}"
+    dest: "{{ destination_alz_path }}/{{ item.path | regex_replace(template_lib_folder, '') }}"
     force: yes
-  with_filetree: "{{ template_lib_folder }}"
+  loop: "{{ folder_list }}"
   when: 
-    - item.state == 'file'
+    - item.isdir == false
     - item.path is search(".yaml")
     - topology.management_groups[region][service].update_lib_folder | default(True)
 
