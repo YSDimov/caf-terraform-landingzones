@@ -17,7 +17,7 @@ Please note that during the creation of the platform landingones you will have t
 The best course of actions is to follow the readme files generated within each landing zones, as rover ignite creates the tfvars and also the documentation.
 
 Once you are ready to ingite, just run:
-# TODO rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id.stdout}}
+# TODO stdout removed from subscription.stdout
 ```bash
 rover login -t {{ azure_landing_zones.identity.tenant_name | default(tenant_name)}} -s {{subscription_id}}
 
