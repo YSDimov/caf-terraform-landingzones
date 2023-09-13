@@ -8,7 +8,12 @@
 #            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
 #
 # TODO add extra var --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
-#
+#            --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
+#            --extra-vars upn_owner=yordan.dimov@phicloudplatform.onmicrosoft.com \
+#            --extra-vars tenant_name=phicloudplatform.onmicrosoft.com \
+#            --extra-vars tenant_id=77d3fca4-653b-4cdf-b36f-d8ab89d3e517 \
+#            --extra-vars subscription_id=849c1d97-dbae-4e1e-bf0a-c555411115d0 \
+#            --extra-vars subscription_name="PHI-PLATFORM-PRD-MANAGEMENT" \
 #fatal: [localhost]: FAILED! => {"changed": true, "cmd": "az ad signed-in-user show --query id -o tsv", "delta": "0:00:0***.***58852", "end": "2023-09-***3 09:04:3***.656002", "msg": "non-zero return code", "rc": ***, "start": "2023-09-***3 09:04:30.497***50", "stderr": "ERROR: /me request is only valid with delegated authentication flow.", "stderr_lines": ["ERROR: /me request is only valid with delegated authentication flow."], "stdout": "", "stdout_lines": []}
 
 
