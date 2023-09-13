@@ -4,11 +4,11 @@
 #
 # TODO not properly declared variables. Missing $
 #            -e GITOPS_SERVER_URL=GITHUB_SERVER_URL/GITHUB_REPOSITORY \ -> on top these can be processed only as script env vars
-#            -e RUNNER_NUMBERS= secrets.RUNNER_NUMBERS  \
-#            -e AGENT_TOKEN= secrets.RUNNER_REGISTRATION_TOKEN  \
+#            -e RUNNER_NUMBERS= RUNNER_NUMBERS  \
+#            -e AGENT_TOKEN= RUNNER_REGISTRATION_TOKEN  \
 #
-# TODO add extra var --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
-#            --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
+# TODO add extra var --extra-vars AZURE_OBJECT_ID=AZURE_OBJECT_ID \
+#            --extra-vars AZURE_OBJECT_ID=AZURE_OBJECT_ID \
 #            --extra-vars upn_owner=yordan.dimov@phicloudplatform.onmicrosoft.com \
 #            --extra-vars tenant_name=phicloudplatform.onmicrosoft.com \
 #            --extra-vars tenant_id=77d3fca4-653b-4cdf-b36f-d8ab89d3e517 \
