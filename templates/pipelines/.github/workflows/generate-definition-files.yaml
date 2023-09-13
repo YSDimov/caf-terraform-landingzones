@@ -6,6 +6,10 @@
 #            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \ -> on top these can be processed only as script env vars
 #            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
 #            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+#
+# TODO add extra var --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
+#
+#fatal: [localhost]: FAILED! => {"changed": true, "cmd": "az ad signed-in-user show --query id -o tsv", "delta": "0:00:0***.***58852", "end": "2023-09-***3 09:04:3***.656002", "msg": "non-zero return code", "rc": ***, "start": "2023-09-***3 09:04:30.497***50", "stderr": "ERROR: /me request is only valid with delegated authentication flow.", "stderr_lines": ["ERROR: /me request is only valid with delegated authentication flow."], "stdout": "", "stdout_lines": []}
 
 
 name: "Generate definition files"
@@ -105,6 +109,7 @@ jobs:
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
+            --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
             -e base_folder=$(pwd) \
             -e GITOPS_SERVER_URL="${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}" \
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
