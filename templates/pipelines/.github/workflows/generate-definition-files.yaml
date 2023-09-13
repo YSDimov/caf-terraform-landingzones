@@ -119,8 +119,14 @@ jobs:
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
+            --extra-vars upn_owner=yordan.dimov@phicloudplatform.onmicrosoft.com \
+            --extra-vars tenant_name=phicloudplatform.onmicrosoft.com \
+            --extra-vars tenant_id=77d3fca4-653b-4cdf-b36f-d8ab89d3e517 \
+            --extra-vars subscription_id=849c1d97-dbae-4e1e-bf0a-c555411115d0 \
+            --extra-vars subscription_name="PHI-PLATFORM-PRD-MANAGEMENT" \
+            --extra-vars topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
             -e base_folder=$(pwd) \
-            -e GITOPS_SERVER_URL="${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}" \
+            -e GITOPS_SERVER_URL="${{github.server_url}}/${{github.repository}}" \
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
             -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
@@ -162,6 +168,6 @@ jobs:
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base bootstrap \
-            -R (echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+            -R (echo "${{github.server_url}}/${{github.repository}}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
         
 {% endraw %}
