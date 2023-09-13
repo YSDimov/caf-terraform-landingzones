@@ -118,7 +118,7 @@ jobs:
 
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
-            --extra-vars AZURE_OBJECT_ID=${{secrets.AZURE_OBJECT_ID}} \
+            --extra-vars AZURE_OBJECT_ID=${{ secrets.AZURE_OBJECT_ID}} \
             --extra-vars upn_owner=yordan.dimov@phicloudplatform.onmicrosoft.com \
             --extra-vars tenant_name=phicloudplatform.onmicrosoft.com \
             --extra-vars tenant_id=77d3fca4-653b-4cdf-b36f-d8ab89d3e517 \
@@ -127,12 +127,12 @@ jobs:
             --extra-vars topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
             -e base_folder=$(pwd) \
             -e GITOPS_SERVER_URL="${{github.server_url}}/${{github.repository}}" \
-            -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
-            -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
+            -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS}} \
+            -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN}} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
             -e sub_management=${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID}} \
-            -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }} \
-            -e sub_identity=${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID }} \
+            -e sub_connectivity=${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID}} \
+            -e sub_identity=${{ secrets.AZURE_IDENTITY_SUBSCRIPTION_ID}} \
             -e sub_security=${{secrets.AZURE_SECURITY_SUBSCRIPTION_ID}} \
             -e TF_VAR_environment=${{ inputs.environment }} \
             -e bootstrap_sp_object_id=${{secrets.AZURE_OBJECT_ID}} \
