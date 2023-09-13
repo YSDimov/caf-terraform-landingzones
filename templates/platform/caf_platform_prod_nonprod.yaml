@@ -39,6 +39,7 @@ deployment_mode: {{deployment_mode}}
 terraform_code_repository: https://github.com/YSDimov/caf-terraform-landingzones.git
 caf_landingzone_branch: {{caf_landingzone_branch | default('ysd-5.7.2')}}
 default_rover_image: aztfmod/rover:1.5.4-2307.2804
+gitops_pipelines: 'github'
 # Default image for self-hosted agents
 {% if gitops_pipelines == 'github' %}
 gitops_default_rover_image: aztfmod/rover-agent:1.5.4-2307.2804-github
