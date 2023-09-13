@@ -3,7 +3,7 @@
 # Licensed under the MIT License.
 #
 # TODO not properly declared variables. Missing $
-#            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \
+#            -e GITOPS_SERVER_URL={{GITHUB_SERVER_URL}}/{{GITHUB_REPOSITORY}} \ -> on top these can be processed only as script env vars
 #            -e RUNNER_NUMBERS={{ secrets.RUNNER_NUMBERS }} \
 #            -e AGENT_TOKEN={{ secrets.RUNNER_REGISTRATION_TOKEN }} \
 
@@ -106,7 +106,7 @@ jobs:
           ansible-playbook $(readlink -f ./landingzones/templates/ansible/walk-through-bootstrap.yaml) \
             --extra-vars "@$(readlink -f ./platform/definition/ignite.yaml)" \
             -e base_folder=$(pwd) \
-            -e GITOPS_SERVER_URL=${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}} \
+            -e GITOPS_SERVER_URL="${{env.GITHUB_SERVER_URL}}/${{env.GITHUB_REPOSITORY}}" \
             -e RUNNER_NUMBERS=${{ secrets.RUNNER_NUMBERS }} \
             -e AGENT_TOKEN=${{ secrets.RUNNER_REGISTRATION_TOKEN }} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
