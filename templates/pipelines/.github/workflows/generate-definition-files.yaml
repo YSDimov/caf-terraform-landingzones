@@ -15,6 +15,10 @@
 #            --extra-vars subscription_id=849c1d97-dbae-4e1e-bf0a-c555411115d0 \
 #            --extra-vars subscription_name="PHI-PLATFORM-PRD-MANAGEMENT" \
 #fatal: [localhost]: FAILED! => {"changed": true, "cmd": "az ad signed-in-user show --query id -o tsv", "delta": "0:00:0***.***58852", "end": "2023-09-***3 09:04:3***.656002", "msg": "non-zero return code", "rc": ***, "start": "2023-09-***3 09:04:30.497***50", "stderr": "ERROR: /me request is only valid with delegated authentication flow.", "stderr_lines": ["ERROR: /me request is only valid with delegated authentication flow."], "stdout": "", "stdout_lines": []}
+#
+# TODO missing topology file 
+# fatal: [localhost]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'topology_file' is undefined. 'topology_file' is undefined\n\nThe error appears to be in '/home/vscode/agent/_work/phiplatform-caf-terraform-landingzone/phiplatform-caf-terraform-landingzone/landingzones/templates/ansible/walk-through.yaml': line 74, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- debug:\n  ^ here\n"}
+# --extra-vars topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
 
 
 name: "Generate definition files"
