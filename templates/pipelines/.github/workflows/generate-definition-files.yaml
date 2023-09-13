@@ -162,12 +162,15 @@ jobs:
             git commit -m "Update configuration files"
             git push
           fi
-
+          
           /usr/bin/gh pr create \
             --assignee "@me" \
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base bootstrap \
-            -R (echo "${{github.server_url}}/${{github.repository}}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
-        
+            -R $(echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##') \
+            --head end2end
+          
+          echo "TODO --head end2end added because of error: aborted: you must first push the current branch to a remote, or use the --head flag"
+
 {% endraw %}
