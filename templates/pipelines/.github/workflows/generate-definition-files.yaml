@@ -20,7 +20,7 @@
 # fatal: [localhost]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'topology_file' is undefined. 'topology_file' is undefined\n\nThe error appears to be in '/home/vscode/agent/_work/phiplatform-caf-terraform-landingzone/phiplatform-caf-terraform-landingzone/landingzones/templates/ansible/walk-through.yaml': line 74, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- debug:\n  ^ here\n"}
 # --extra-vars topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
 #
-# TODO gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example: GH_TOKEN: ${{ github.token }} missing
+# TODO gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example: GH_TOKEN missing
 
 
 name: "Generate definition files"
@@ -72,7 +72,7 @@ env:
   TF_REGISTRY_DISCOVERY_RETRY: 5
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
-  GH_TOKEN: ${{ github.token }}
+  GH_TOKEN: ${{ tst_github.token }}
 
 {% raw %}
 jobs:
@@ -129,7 +129,7 @@ jobs:
             --extra-vars subscription_name="PHI-PLATFORM-PRD-MANAGEMENT" \
             --extra-vars topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
             -e base_folder=$(pwd) \
-            -e GITOPS_SERVER_URL="${{github.server_url}}/${{github.repository}}" \
+            -e AGENT_GITOPS_SERVER_URL="${{github.server_url}}/${{github.repository}}" \
             -e RUNNER_NUMBERS=${{secrets.RUNNER_NUMBERS}} \
             -e AGENT_TOKEN=${{secrets.RUNNER_REGISTRATION_TOKEN}} \
             -e ROVER_AGENT_DOCKER_IMAGE=${{secrets.ROVER_AGENT_DOCKER_IMAGE}} \
@@ -148,10 +148,11 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "github-actions@github.com"
 
-          git checkout -b end2end
+          git checkout -b end2end --track origin/main
           git add .
           pre-commit
           git commit -am "Update definition files."
+          git push origin/main HEAD
 
           git remote -v
 
@@ -171,8 +172,7 @@ jobs:
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base bootstrap \
-            -R $(echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##') \
-            --head end2end
+            -R $(echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
           
           echo "TODO --head end2end added because of error: aborted: you must first push the current branch to a remote, or use the --head flag"
 
