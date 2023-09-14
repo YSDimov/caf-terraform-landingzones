@@ -19,6 +19,8 @@
 # TODO missing topology file 
 # fatal: [localhost]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'topology_file' is undefined. 'topology_file' is undefined\n\nThe error appears to be in '/home/vscode/agent/_work/phiplatform-caf-terraform-landingzone/phiplatform-caf-terraform-landingzone/landingzones/templates/ansible/walk-through.yaml': line 74, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- debug:\n  ^ here\n"}
 # --extra-vars topology_file="$(pwd)/landingzones/templates/platform/caf_platform_prod_nonprod.yaml" \
+#
+# TODO gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example: GH_TOKEN: ${{ github.token }} missing
 
 
 name: "Generate definition files"
@@ -70,6 +72,7 @@ env:
   TF_REGISTRY_DISCOVERY_RETRY: 5
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
+  GH_TOKEN: ${{ github.token }}
 
 {% raw %}
 jobs:
