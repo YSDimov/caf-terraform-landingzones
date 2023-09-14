@@ -1,8 +1,146 @@
+# TODO
+# ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+# JSON: Expecting value: line 1 column 1 (char 0)
+
+# Syntax Error while loading YAML.
+#   did not find expected '-' indicator
+
+# The error appears to be in '/tf/caf/landingzones/templates/ansible/get_tfstate_content.yaml': line 51, column 2, but may
+# be elsewhere in the file depending on the exact syntax problem.
+
+# The offending line appears to be:
+
+
+#  - debug:
+#  ^ here
+
+# - debug:
+#     msg: 
+#       - "env: '{{env}}'"
+#       - "exported_variable_name: '{{exported_variable_name}}'"
+#       - "resource_key: '{{resource_key | default('')}}'"
+
+# - set_fact:
+#     tfstate_obj: "{{resources.tfstates.platform[tfstate_key] if env == '' else resources.tfstates.platform[tfstate_key][env]}}"
+#     tfstate_key_name: "{{resources.tfstates.platform[tfstate_key].lz_key_name if env == '' else resources.tfstates.platform[tfstate_key][env].lz_key_name}}"
+#     env_var: "{{ env if env != '' else '' }}"
+
+# # Get tfstate
+# - name: "[Get {{ tfstate_key_name }} tfstate account name"
+#   register: storage_account
+#   shell: |
+#     az storage account list \
+#       --subscription {{ resources.caf_launchpad.subscription_id }} \
+#       --query "[?tags.caf_tfstate=='{{ caf_level | default('level0') }}' && tags.caf_environment=='{{ resources.caf_environment }}'].{name:name}[0]" -o json | jq -r .name
+
+# - set_fact:
+#     "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"
+
+# - debug:
+#     msg: "{{lookup('vars', tfstate_key_name + '_storage_account')}}"
+
+# - name: "[Get subscription details for {{ tfstate_obj.tfstate }} }}"
+#   register: tfstate_exists
+#   ignore_errors: true
+#   shell: |
+#     az storage blob download \
+#       --name "{{ tfstate_obj.tfstate }}" \
+#       --account-name "{{ lookup('vars', tfstate_key_name + '_storage_account').stdout }}" \
+#       --container-name "{{ tfstate_obj.workspace | default('tfstate') }}" \
+#       --auth-mode "login" \
+#       --file "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}" 
+
+# - set_fact:
+#     "{{tfstate_key_name}}_tfstate_exists": "{{ lookup('vars', 'tfstate_exists') }}"
+
+# - name: "Get {{tfstate_key_name}} details from tfstate"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+#   shell: "cat {{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
+#   register: "tfstate_file"
+
+# - set_fact:
+#     "{{tfstate_key_name}}_tfstate": "{{ lookup('vars', 'tfstate_file') }}"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+
+#  - debug:
+#      msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
+
+# - name: "Get {{tfstate_key_name}} json data"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+#     - lookup('vars', tfstate_key_name + '_storage_account').rc == 0
+#   set_fact:
+#     jsondata: "{{ lookup('vars', tfstate_key_name + '_tfstate').stdout | from_json }}"
+
+# - name: "Set {{exported_variable_name}}"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+#     - lookup('vars', tfstate_key_name + '_tfstate')
+#     - resource_key is undefined
+#     - env_var == ''
+#   set_fact:
+#     "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
+#   vars:
+#     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+# - name: "Set {{exported_variable_name}} with env:{{env}} - no resource_key"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+#     - lookup('vars', tfstate_key_name + '_tfstate')
+#     - resource_key is undefined
+#     - env_var != ''
+#   set_fact:
+#     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True ) }}"
+#   with_together:
+#     - ["{{env}}"]
+#     - ["{{jsondata | default({}) | json_query(path)}}"]
+#   vars:
+#     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+# - name: "Set {{exported_variable_name}} - (with resource_key: {{resource_key}})"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+#     - lookup('vars', tfstate_key_name + '_tfstate')
+#     - resource_key is defined
+#     - env == ''
+#   set_fact:
+#     "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
+#   vars:
+#     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+
+
+# - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
+#   when:
+#     - resource_key is defined
+#     - env != ''
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
+#     - lookup('vars', tfstate_key_name + '_tfstate')
+#   set_fact:
+#     "{{exported_variable_name}}": "{{ lookup('vars', exported_variable_name, default={}) | combine({item.0: item.1}, recursive=True )) }}"
+#   with_together:
+#     - ["{{env}}"]
+#     - ["{{jsondata | default({}) | json_query(path)}}"]
+#   vars:
+#     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+
+# - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
+#   when:
+#     - lookup('vars', tfstate_key_name + '_tfstate_exists') == 0
+#   file:
+#     path: "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
+#     state: absent
+
 - debug:
     msg: 
       - "env: '{{env}}'"
-      - "exported_variable_name: '{{exported_variable_name}}'"
-      - "resource_key: '{{resource_key | default('')}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
+
+- name: Print message if ansible version is greater than 2.7.0
+  debug:
+    msg: "Ansible version is  {{ ansible_version.full }}"
 
 - set_fact:
     tfstate_obj: "{{resources.tfstates.platform[tfstate_key] if env == '' else resources.tfstates.platform[tfstate_key][env]}}"
@@ -19,9 +157,6 @@
 
 - set_fact:
     "{{tfstate_key_name}}_storage_account": "{{ lookup('vars', 'storage_account') }}"
-
-- debug:
-    msg: "{{lookup('vars', tfstate_key_name + '_storage_account')}}"
 
 - name: "[Get subscription details for {{ tfstate_obj.tfstate }} }}"
   register: tfstate_exists
@@ -48,15 +183,33 @@
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
 
- - debug:
-     msg: "{{lookup('vars', tfstate_key_name + '_tfstate')}}"
-
 - name: "Get {{tfstate_key_name}} json data"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
     - lookup('vars', tfstate_key_name + '_storage_account').rc == 0
   set_fact:
     jsondata: "{{ lookup('vars', tfstate_key_name + '_tfstate').stdout | from_json }}"
+
+- debug:
+    msg:
+    - "{{ tfstate_obj.tfstate }}"
+    - "{{ lookup('vars', tfstate_key_name + '_storage_account').stdout }}"
+    - "{{ tfstate_obj.workspace | default('tfstate') }}"
+    - "{{ job_cache_base_path }}/launchpad/{{ tfstate_obj.tfstate }}"
+    - "{{ tfstate_key_name }}"
+    - "{{ resource_type }}"
+    - 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
+
+# TODO missing general plugin ansible-galaxy collection install community.general
+#TASK [Set launchpad_azuread_groups] ********************************************
+#fatal: [localhost]: FAILED! => {"msg": "template error while templating string: Could not load \"json_query\": 'Invalid plugin FQCN (community.general.json_query): unable to locate collection community.general'. String: {{ jsondata | default({}) | json_query(path)}}. Could not load \"json_query\": 'Invalid plugin FQCN (community.general.json_query): unable to locate collection community.general'"}
 
 - name: "Set {{exported_variable_name}}"
   when:
@@ -68,6 +221,13 @@
     "{{exported_variable_name}}": "{{ jsondata | default({}) | json_query(path)}}"
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
+
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
 - name: "Set {{exported_variable_name}} with env:{{env}} - no resource_key"
   when:
@@ -83,6 +243,13 @@
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}'
 
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
+
 - name: "Set {{exported_variable_name}} - (with resource_key: {{resource_key}})"
   when:
     - lookup('vars', tfstate_key_name + '_tfstate_exists').rc == 0
@@ -94,7 +261,17 @@
   vars:
     path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
 
+- debug:
+    msg: 
+      - "env: '{{env}}'"
+      - "env_var: '{{env_var}}'"
+      - "exported_variable_name: {{exported_variable_name}}"
+      - "resource_key: '{{resource_key | default('resource_key is undefined')}}'"
 
+# DEBUG TODO replaced env with env_var at when
+- set_fact:
+    "resource_key_tmp": "{{resource_key | default('none')}}"
+    
 - name: "Set {{exported_variable_name}} with env:'{{env}}' - (with resource_key: {{resource_key}})"
   when:
     - resource_key is defined
@@ -107,7 +284,7 @@
     - ["{{env}}"]
     - ["{{jsondata | default({}) | json_query(path)}}"]
   vars:
-    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key}}'
+    path: 'outputs.objects.value.{{tfstate_key_name}}.{{resource_type}}.{{resource_key_tmp}}'
 
 - name: "[{{resources[tfstate].relative_destination_folder}}] cleanup"
   when:

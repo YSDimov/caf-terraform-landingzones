@@ -58,7 +58,8 @@ gitops_agents:
                 AGENT_NAME: rover_level0
                 LABELS: platform,master
                 ROVER_RUNNER: true
-                URL: {{GITOPS_SERVER_URL}}
+                # TODO Replaced variable from GITOPS_SERVER_URL to AGENT_GITOPS_SERVER_URL
+                URL: {{AGENT_GITOPS_SERVER_URL}}
               secure_environment_variables:
                 AGENT_TOKEN: {{AGENT_TOKEN}}
 {% set MAX_RUNNERS = RUNNER_NUMBERS | int %}
@@ -93,6 +94,7 @@ gitops_agents:
                 AGENT_NAME: agent{{i}}
                 LABELS: platform
                 ROVER_RUNNER: true
+                # TODO Replaced variable from GITOPS_SERVER_URL to AGENT_GITOPS_SERVER_URL
                 URL: {{GITOPS_SERVER_URL}}
               secure_environment_variables:
                 AGENT_TOKEN: {{AGENT_TOKEN}}
@@ -111,4 +113,4 @@ gitops_agents:
                 name: ipconfig
                 lz_key: launchpad
                 vnet_key: vnet_region1
-                subnet_key: level0
+                subnet_key: level0-aci

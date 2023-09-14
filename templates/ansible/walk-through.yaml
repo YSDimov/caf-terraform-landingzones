@@ -33,12 +33,13 @@
   shell: dig @resolver1.opendns.com A myip.opendns.com +short -4
   register: public_ip
 
-- debug:
-    msg:
-      - "public_ip: {{ public_ip }}"
-      - "AZURE_OBJECT_ID: {{ AZURE_OBJECT_ID }}"
-      - "upn_owner: {{ upn_owner }}"
-      - "tenant_name: {{ tenant_name }}"
+# TODO missing AZURE_OBJECT_ID param failing when enabled
+# - debug:
+#     msg:
+#       - "public_ip: {{ public_ip }}"
+#       - "AZURE_OBJECT_ID: {{ bash_object_id.stdout | AZURE_OBJECT_ID }}"
+#       - "upn_owner: {{ upn_owner }}"
+#       - "tenant_name: {{ tenant_name }}"
 
 - set_fact:
     regions:  "{{ azure_regions }}"

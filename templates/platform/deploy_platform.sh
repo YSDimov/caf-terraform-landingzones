@@ -7,6 +7,7 @@ export ANSIBLE_DISPLAY_SKIPPED_HOSTS=False
 params=$(echo ${@} | xargs -n1 | xargs -I@ echo "-e @ " )
 
 echo ${params} | xargs
+echo ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
 echo "sub_management: ${sub_management}"
 
 ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.yaml \
@@ -22,7 +23,13 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   -e private_endpoints=true \
   -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
+  -e AGENT_TOKEN="AEXFQE7SNJRVQTJ5ZEEPCADFAKVXM" \
+  -e AGENT_GITOPS_SERVER_URL="https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" \
+  -e GITOPS_SERVER_URL="https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" \
+  -e base_folder=$(pwd) \
   -e $(echo ${params} | xargs)
+
+  #  -e AGENT_TOKEN="AEXFQEZXZ4VNV4HYXNREQA3FAB3K2" \
 
 # Generate initial configuration
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
@@ -89,7 +96,7 @@ EOF
       --title "Setup the foundation services for Azure landing zones" \
       --body "${body}" \
       --base main \
-      -R ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
+      -R "https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" #TODO ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}
   else
     git checkout bootstrap
     git add .

@@ -21,21 +21,43 @@ alz_mg_name: {{alz_mg_name}}
 azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
-# folder parameters
+# folder parameters TODO
+# {% raw %}
+# bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
+# landingzones_folder: "{{base_folder}}/landingzones"
+# public_templates_folder: "{{base_folder}}/landingzones/templates"
+# private_templates_folder: "{{base_folder}}/platform/templates"
+# platform_configuration_folder: "{{base_folder}}/platform/configuration"
+# platform_definition_folder: "{{base_folder}}/platform/definition"
+# platform_template_folder: "{{base_folder}}/platform/template"
+# firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
+# {% endraw %}
 {% raw %}
-bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
-landingzones_folder: "{{base_folder}}/landingzones"
-public_templates_folder: "{{base_folder}}/landingzones/templates"
-private_templates_folder: "{{base_folder}}/platform/templates"
-platform_configuration_folder: "{{base_folder}}/platform/configuration"
-platform_definition_folder: "{{base_folder}}/platform/definition"
-platform_template_folder: "{{base_folder}}/platform/template"
-firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
+bootstrap_file: "/tf/caf/platform/definition/ignite.yaml"
+landingzones_folder: "/tf/caf/landingzones"
+public_templates_folder: "/tf/caf/landingzones/templates"
+private_templates_folder: "/tf/caf/platform/templates"
+platform_configuration_folder: "/tf/caf/platform/configuration"
+platform_definition_folder: "/tf/caf/platform/definition"
+platform_template_folder: "/tf/caf/platform/template"
+firewall_rules_path: "/tf/caf/platform/firewall_rules"
+#bootstrap_file_tst: {{base_folder}}/platform/definition/ignite.yaml
 {% endraw %}
 
 deployment_mode: {{deployment_mode}}
 
 # TODO image version and branch
+# terraform_code_repository: https://github.com/YSDimov/caf-terraform-landingzones.git
+# caf_landingzone_branch: ysd-5.7.2
+# default_rover_image: 'aztfmod/rover:1.5.4-2307.2804'
+gitops_pipelines: 'github'
+gitops_default_rover_image: 'aztfmod/rover-agent:1.5.4-2307.2804-github' # TODO missing param
+#GITOPS_SERVER_URL: https://github.com/YSDimov/caf-terraform-landingzones.git
+# AGENT_TOKEN: 'AEXFQEZXZ4VNV4HYXNREQA3FAB3K2'
+#AGENT_TOKEN: {{ AGENT_TOKEN | default('none') }}
+#AGENT_GITOPS_SERVER_URL: {{ AGENT_GITOPS_SERVER_URL | default('none') }}
+
+
 terraform_code_repository: https://github.com/YSDimov/caf-terraform-landingzones.git
 caf_landingzone_branch: {{caf_landingzone_branch | default('ysd-5.7.2')}}
 default_rover_image: aztfmod/rover:1.5.4-2307.2804
@@ -99,7 +121,9 @@ caf_launchpad:
   tenant_id: {{tenant_id}}
   global_tags_propagated: yes
   tags:
-    caf_deployment_mode: demo
+    PhiEnv: Prod
+    PhiOpsTeam: CloudOps
+    PhiIaC: Terraform
 
 
 azuread_user_ea_account_owner: {{azuread_user_ea_account_owner | default(upn)}}
@@ -259,10 +283,11 @@ azure_landing_zones:
     # Check in Azure AD the User Principal Name attribute value. Note there is a special convention for guest accounts.
     caf_platform_maintainers:
       user_principal_names:
-        # - 
+        - aleks.spatovski@phipartnerscloud.com
+        - yordan.dimov@phicloudplatform.onmicrosoft.com
     caf_platform_contributors:
       user_principal_names:
-        # - 
+        - yordan.dabov@phipartnerscloud.com
     backup_policy:
       vms: default
 
