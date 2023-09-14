@@ -26,10 +26,10 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   -e AGENT_TOKEN="AEXFQE7SNJRVQTJ5ZEEPCADFAKVXM" \
   -e AGENT_GITOPS_SERVER_URL="https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" \
   -e GITOPS_SERVER_URL="https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" \
-  -e base_folder=$(pwd) \
   -e $(echo ${params} | xargs)
 
   #  -e AGENT_TOKEN="AEXFQEZXZ4VNV4HYXNREQA3FAB3K2" \
+  #   -e base_folder=$(pwd) \ specified in walk-through.yaml as base_folder: "{{ base_folder | default('/tf/caf') }}
 
 # Generate initial configuration
 ansible-playbook $(readlink -f ./landingzones/templates/ansible/ansible.yaml) \
