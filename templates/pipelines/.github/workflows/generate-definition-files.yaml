@@ -65,6 +65,8 @@ on:
         required: true
       RUNNER_NUMBERS:
         required: true
+      GH_TOKEN:
+        required: true
 
 
 env:
@@ -93,7 +95,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
-          token: '' # TODO required.
+          token: ${{ secrets.GH_TOKEN }} # TODO required.
 
       - name: 'Azure Login'
         uses: azure/login@v1
