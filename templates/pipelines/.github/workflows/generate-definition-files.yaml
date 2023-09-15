@@ -75,7 +75,7 @@ env:
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
 {% raw %}  
-  GH_TOKEN: ${{ github.token }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 
 jobs:
