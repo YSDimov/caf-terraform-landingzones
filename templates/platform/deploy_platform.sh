@@ -23,7 +23,7 @@ ansible-playbook /tf/caf/landingzones/templates/ansible/walk-through-bootstrap.y
   -e private_endpoints=true \
   -e caf_landingzone_branch="$(cd /tf/caf/landingzones && git rev-parse --abbrev-ref HEAD)" \
   --extra-vars "@/tf/caf/landingzones/templates/platform/ignite.yaml" \
-  -e AGENT_TOKEN="AEXFQE7SNJRVQTJ5ZEEPCADFAKVXM" \
+  -e AGENT_TOKEN="AEXFQE2QK57QXZD2LEVIQP3FAMPJ4" \
   -e AGENT_GITOPS_SERVER_URL="https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" \
   -e GITOPS_SERVER_URL="https://github.com/PHI-Partners/phiplatform-caf-terraform-landingzone" \
   -e $(echo ${params} | xargs)

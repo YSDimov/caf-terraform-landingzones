@@ -80,6 +80,11 @@ jobs:
   rover:
     name: Generate configuration files
     runs-on: [self-hosted, platform]
+    permissions:
+      id-token: write
+      contents: write
+      issues: write
+      pull-requests: write
     
     steps:
       
@@ -149,16 +154,23 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "github-actions@github.com"
 
-          git checkout -b end2end --track origin/main
+          echo "TODO Please commit your changes or stash them before you switch branches. git fetch origin bootstrap"
+
+          git fetch origin bootstrap
+          git checkout -b end2end --track origin/bootstrap
           git add .
           pre-commit
           git commit -am "Update definition files."
-          git push origin/main HEAD
+          git push origin HEAD
 
           git remote -v
 
           echo ${GITHUB_HEAD_REF}
-          
+          echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+          tst=$(echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
+          echo "${tst}"
+          gh api graphql -f query='query($endCursor:String){repository(owner:"YSDimov",name:"caval6"){assignableUsers(first:100,after:$endCursor){nodes{login}pageInfo{endCursor,hasNextPage}}}}' --paginate --jq '.data.repository.assignableUsers.nodes[].login' #| tee assignable-azure.txt
+
           if [ -z "$(git status --porcelain)" ];
           then
               echo "Nothing to commit"
@@ -169,12 +181,13 @@ jobs:
           fi
           
           /usr/bin/gh pr create \
-            --assignee "@me" \
             --title "Complete the deployment of the platform services." \
             --body "${body}" \
             --base bootstrap \
             -R $(echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
           
           echo "TODO --head end2end added because of error: aborted: you must first push the current branch to a remote, or use the --head flag"
+          echo "TODO GraphQL: Could not resolve to a User with the login of 'github-actions[bot]'. (u000)            --assignee "@me"  removed because owner not known"
+
 
 {% endraw %}

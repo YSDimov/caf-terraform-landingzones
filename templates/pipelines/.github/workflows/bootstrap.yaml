@@ -10,9 +10,14 @@ on:
     branches:
       - bootstrap
 
+# TODO requires permissions to commit and create pull requests remote: Write access to repository not granted.
+# in actions general settings check allow workflows to create pr
 permissions:
   id-token: write
-  contents: read
+  contents: write
+  issues: write
+  pull-requests: write
+
 {% raw %}
 concurrency: 
   group: ${{ github.ref }}
