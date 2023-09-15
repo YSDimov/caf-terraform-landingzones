@@ -22,27 +22,29 @@ azure_regions: {{azure_regions }}
 prefix: {{prefix}}
 
 # folder parameters TODO
-# {% raw %}
-# bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
-# landingzones_folder: "{{base_folder}}/landingzones"
-# public_templates_folder: "{{base_folder}}/landingzones/templates"
-# private_templates_folder: "{{base_folder}}/platform/templates"
-# platform_configuration_folder: "{{base_folder}}/platform/configuration"
-# platform_definition_folder: "{{base_folder}}/platform/definition"
-# platform_template_folder: "{{base_folder}}/platform/template"
-# firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
-# {% endraw %}
 {% raw %}
-bootstrap_file: "/tf/caf/platform/definition/ignite.yaml"
-landingzones_folder: "/tf/caf/landingzones"
-public_templates_folder: "/tf/caf/landingzones/templates"
-private_templates_folder: "/tf/caf/platform/templates"
-platform_configuration_folder: "/tf/caf/platform/configuration"
-platform_definition_folder: "/tf/caf/platform/definition"
-platform_template_folder: "/tf/caf/platform/template"
-firewall_rules_path: "/tf/caf/platform/firewall_rules"
-#bootstrap_file_tst: {{base_folder}}/platform/definition/ignite.yaml
+# TODO Paths enabled executed from workflow on rover
+bootstrap_file: "{{base_folder}}/platform/definition/ignite.yaml"
+landingzones_folder: "{{base_folder}}/landingzones"
+public_templates_folder: "{{base_folder}}/landingzones/templates"
+private_templates_folder: "{{base_folder}}/platform/templates"
+platform_configuration_folder: "{{base_folder}}/platform/configuration"
+platform_definition_folder: "{{base_folder}}/platform/definition"
+platform_template_folder: "{{base_folder}}/platform/template"
+firewall_rules_path: "{{base_folder}}/platform/firewall_rules"
 {% endraw %}
+# {% raw %}
+# TODO Paths enabled when executed manually and locally from rover
+# bootstrap_file: "/tf/caf/platform/definition/ignite.yaml"
+# landingzones_folder: "/tf/caf/landingzones"
+# public_templates_folder: "/tf/caf/landingzones/templates"
+# private_templates_folder: "/tf/caf/platform/templates"
+# platform_configuration_folder: "/tf/caf/platform/configuration"
+# platform_definition_folder: "/tf/caf/platform/definition"
+# platform_template_folder: "/tf/caf/platform/template"
+# firewall_rules_path: "/tf/caf/platform/firewall_rules"
+#bootstrap_file_tst: {{base_folder}}/platform/definition/ignite.yaml
+# {% endraw %}
 
 deployment_mode: {{deployment_mode}}
 
