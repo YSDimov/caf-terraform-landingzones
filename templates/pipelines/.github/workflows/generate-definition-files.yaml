@@ -93,6 +93,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          token: '' # TODO required.
 
       - name: 'Azure Login'
         uses: azure/login@v1
@@ -155,12 +156,11 @@ jobs:
           git config user.email "github-actions@github.com"
 
           echo "TODO Please commit your changes or stash them before you switch branches. git fetch origin bootstrap"
-
-          git fetch origin bootstrap
-          git checkout -b end2end --track origin/bootstrap
+          
+          git checkout -b end2end
           git add .
           pre-commit
-          git commit -am "Update definition files."
+          git commit -am "Update definition files $(git rev-parse --abbrev-ref HEAD)."
           git push origin HEAD
 
           git remote -v
@@ -169,14 +169,14 @@ jobs:
           echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
           tst=$(echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" || echo "git config --get remote.origin.url" | sed -e 's#^https://github.com/##; s#^git@github.com:##; s#.git$##')
           echo "${tst}"
-          gh api graphql -f query='query($endCursor:String){repository(owner:"YSDimov",name:"caval6"){assignableUsers(first:100,after:$endCursor){nodes{login}pageInfo{endCursor,hasNextPage}}}}' --paginate --jq '.data.repository.assignableUsers.nodes[].login' #| tee assignable-azure.txt
+          echo "gh api graphql -f query='query($endCursor:String){repository(owner:"YSDimov",name:"caval6"){assignableUsers(first:100,after:$endCursor){nodes{login}pageInfo{endCursor,hasNextPage}}}}' --paginate --jq '.data.repository.assignableUsers.nodes[].login' #| tee assignable-azure.txt"
 
           if [ -z "$(git status --porcelain)" ];
           then
               echo "Nothing to commit"
           else
             git add --all .
-            git commit -m "Update configuration files"
+            git commit -m "Update configuration files $(git rev-parse --abbrev-ref HEAD)."
             git push
           fi
           
