@@ -37,15 +37,17 @@ on:
         required: true
       AZURE_MANAGEMENT_SUBSCRIPTION_ID:
         required: true
-
+      GH_TOKEN:
+        required: true
 
 env:
   TF_CLI_ARGS: '-no-color'
   TF_REGISTRY_DISCOVERY_RETRY: 5
   TF_REGISTRY_CLIENT_TIMEOUT: 15
   ROVER_RUNNER: true
-
 {% raw %}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
 jobs:
   rover:
     name: Generate configuration files
@@ -58,6 +60,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GH_TOKEN }} # TODO required.
 
       - name: 'Azure Login'
         uses: azure/login@v1

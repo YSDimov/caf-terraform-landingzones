@@ -43,12 +43,9 @@ jobs:
 
   configuration_updates:
     name: Generate configuration tfvars files
-    runs-on: [self-hosted, platform]
-
     permissions:
       id-token: write
       contents: write
-      
     needs: [environment]
     uses: ./.github/workflows/generate-configuration-files.yaml
     secrets:
@@ -275,28 +272,28 @@ jobs:
       level: level2
       terraform_action: plan_apply
 
-  asvm:
-    uses: ./.github/workflows/rover.yaml
-    needs: [environment, management, connectivity_virtual_hubs_prod]
-    concurrency: 
-      group: level2-asvm_subscription_vending_machine
-    secrets:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-      AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
-    with:
-      terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
-      terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
-      environment: ${{ needs.environment.outputs.environment }}
-      caf_identity_aad_key: cred_level0
-      landingzone_code_path: ./landingzones/caf_solution
-      landingzone_configuration_path: ./platform/configuration/level2/asvm
-      plan_path: ${GITHUB_WORKSPACE}/asvm_subscription_vending_machine.tfstate.tfplan
-      tfstate: asvm_subscription_vending_machine.tfstate
-      level: level2
-      terraform_action: plan_apply
+  # asvm:
+  #   uses: ./.github/workflows/rover.yaml
+  #   needs: [environment, management, connectivity_virtual_hubs_prod]
+  #   concurrency: 
+  #     group: level2-asvm_subscription_vending_machine
+  #   secrets:
+  #     AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  #     AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  #     AZURE_LAUNCHPAD_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #     AZURE_TARGET_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #     AZURE_MANAGEMENT_SUBSCRIPTION_ID: ${{ secrets.AZURE_MANAGEMENT_SUBSCRIPTION_ID }}
+  #   with:
+  #     terraform_code_ref: ${{ needs.environment.outputs.terraform_code_ref }}
+  #     terraform_code_repository: ${{ needs.environment.outputs.terraform_code_repository }}
+  #     environment: ${{ needs.environment.outputs.environment }}
+  #     caf_identity_aad_key: cred_level0
+  #     landingzone_code_path: ./landingzones/caf_solution
+  #     landingzone_configuration_path: ./platform/configuration/level2/asvm
+  #     plan_path: ${GITHUB_WORKSPACE}/asvm_subscription_vending_machine.tfstate.tfplan
+  #     tfstate: asvm_subscription_vending_machine.tfstate
+  #     level: level2
+  #     terraform_action: plan_apply
 
 # TODO hold deployment of networking until required
   # connectivity_virtual_wans_prod:
