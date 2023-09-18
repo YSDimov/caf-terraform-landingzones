@@ -35,6 +35,8 @@ on:
         required: true
       AZURE_OBJECT_ID:
         required: true
+      AZURE_MANAGEMENT_SUBSCRIPTION_ID:
+        required: true
 
 
 env:
