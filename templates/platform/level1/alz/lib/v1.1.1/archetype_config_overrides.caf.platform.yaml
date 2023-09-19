@@ -209,7 +209,7 @@ archetype_definitions:
       Deploy-Diagnostics-LogAnalytics:
       Deploy-Sql-Security:
       Enforce-Encryption-CMK:
-      Enforce-EncryptTransit:
+      #Enforce-EncryptTransit:
     remediation:
       policy:
       policy_set_definitions:
