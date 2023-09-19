@@ -396,6 +396,8 @@ archetype_definitions:
             attribute_key: id
             resource_keys:
               - identity
+  security:
+    archetype_id: platform_security
   decommissioned:
     archetype_id: platform_decommissioned
     policy_assignments:
