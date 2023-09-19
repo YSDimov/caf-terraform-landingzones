@@ -220,9 +220,9 @@ jobs:
       terraform_code_ref: 'int-5.7.0'
       caf_identity_aad_key: cred_alz
       landingzone_code_path: ./landingzones/caf_solution/add-ons/caf_eslz
-      landingzone_configuration_path: ./platform/configuration/level1/alz/{{alz_mg_prefix}}
-      plan_path: ${GITHUB_WORKSPACE}/alz_{{alz_mg_prefix}}.tfstate.tfplan
-      tfstate: alz_{{alz_mg_prefix}}.tfstate
+      landingzone_configuration_path: ./platform/configuration/level1/alz/{{resources.alz_mg_prefix}}
+      plan_path: ${GITHUB_WORKSPACE}/alz_{{resources.alz_mg_prefix}}.tfstate.tfplan
+      tfstate: alz_{{resources.alz_mg_prefix}}.tfstate
       level: level1
       terraform_action_apply: -parallelism=50
       terraform_action: plan_apply
