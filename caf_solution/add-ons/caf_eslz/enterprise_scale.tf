@@ -28,18 +28,22 @@ module "enterprise_scale" {
   configure_connectivity_resources = var.configure_connectivity_resources
   configure_identity_resources     = var.configure_identity_resources
   configure_management_resources   = var.configure_management_resources
+  configure_security_resources   = var.configure_security_resources
   deploy_connectivity_resources    = var.deploy_connectivity_resources
   deploy_diagnostics_for_mg        = var.deploy_diagnostics_for_mg
   deploy_identity_resources        = var.deploy_identity_resources
+  deploy_security_resources        = var.deploy_security_resources
   deploy_management_resources      = var.deploy_management_resources
   disable_telemetry                = var.disable_telemetry
   subscription_id_connectivity     = local.subscription_id_connectivity
   subscription_id_management       = local.subscription_id_management
   subscription_id_identity         = local.subscription_id_identity
+  subscription_id_security         = local.subscription_id_security
 }
 
 locals {
   subscription_id_connectivity = var.subscription_id_connectivity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_connectivity
   subscription_id_management   = var.subscription_id_management == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_management
   subscription_id_identity     = var.subscription_id_identity == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_identity
+  subscription_id_security     = var.subscription_id_security == null ? data.azurerm_client_config.current.subscription_id : var.subscription_id_security
 }
