@@ -258,7 +258,7 @@ archetype_definitions:
       Deploy-Diagnostics-LogAnalytics:
       Deploy-Sql-Security:
       Enforce-Encryption-CMK:
-      Enforce-EncryptTransit:
+      #Enforce-EncryptTransit: # TODO Missing from v2.1.0
     remediation:
       policy:
       policy_set_definitions:
