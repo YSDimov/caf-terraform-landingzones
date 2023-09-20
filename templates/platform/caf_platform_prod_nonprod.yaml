@@ -20,7 +20,9 @@ alz_mg_prefix: {{alz_mg_prefix}}
 alz_mg_name: {{alz_mg_name}}
 azure_regions: {{azure_regions }}
 prefix: {{prefix}}
+{% for region, a_value in bootstrap.deployments.platform.alz.items() %}
 root_id: {{ bootstrap.management_groups[region].es.management_group_prefix | default(alz_mg_prefix)}}
+{% endfor %}
 
 # folder parameters TODO
 {% raw %}
@@ -54,7 +56,7 @@ deployment_mode: {{deployment_mode}}
 # caf_landingzone_branch: ysd-5.7.2
 # default_rover_image: 'aztfmod/rover:1.5.4-2307.2804'
 gitops_pipelines: 'github'
-gitops_default_rover_image: 'aztfmod/rover-agent:1.5.4-2307.2804-github' # TODO missing param
+gitops_default_rover_image: 'aztfmod/rover-agent:1.5.7-2309.1906-github' # TODO missing param
 #GITOPS_SERVER_URL: https://github.com/YSDimov/caf-terraform-landingzones.git
 # AGENT_TOKEN: 'AEXFQEZXZ4VNV4HYXNREQA3FAB3K2'
 #AGENT_TOKEN: {{ AGENT_TOKEN | default('none') }}
@@ -63,11 +65,11 @@ gitops_default_rover_image: 'aztfmod/rover-agent:1.5.4-2307.2804-github' # TODO 
 
 terraform_code_repository: https://github.com/YSDimov/caf-terraform-landingzones.git
 caf_landingzone_branch: {{caf_landingzone_branch | default('ysd-5.7.2')}}
-default_rover_image: aztfmod/rover:1.5.4-2307.2804
+default_rover_image: aztfmod/rover-agent:1.5.7-2309.1906
 gitops_pipelines: 'github'
 # Default image for self-hosted agents
 {% if gitops_pipelines == 'github' %}
-gitops_default_rover_image: aztfmod/rover-agent:1.5.4-2307.2804-github
+gitops_default_rover_image: aztfmod/rover-agent:1.5.7-2309.1906-github
 {% elif gitops_pipelines == 'tfcloud' %}
 gitops_default_rover_image: aztfmod/rover-agent:1.1.9-2206.301920-preview-tfc
 {% endif %}
