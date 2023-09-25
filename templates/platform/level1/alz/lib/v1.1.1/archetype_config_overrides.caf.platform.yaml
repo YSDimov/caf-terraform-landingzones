@@ -258,7 +258,7 @@ archetype_definitions:
       Enforce-TLS-SSL:
       CAF-Deploy-Nsg-FlowLogs:
         effect: DeployIfNotExists
-        retention: 5
+        retention: '5'
         storageAccountResourceId: 
           lz_key: management
           output_key: objects
@@ -353,7 +353,7 @@ archetype_definitions:
     policy_assignments:
       CAF-Deploy-Nsg-FlowLogs:
         effect: DeployIfNotExists
-        retention: 5
+        retention: '5'
         storageAccountResourceId: 
           lz_key: management
           output_key: objects

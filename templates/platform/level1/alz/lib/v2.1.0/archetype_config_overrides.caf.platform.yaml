@@ -21,15 +21,15 @@ archetype_definitions:
 {% if topology.subscription_deployment_mode == "single_reuse" %}
       CAF-Deploy-Nsg-FlowLogs:
         effect: DeployIfNotExists
-        retention: 5
+        retention: '5'
         storageAccountResourceId: 
           lz_key: management
           output_key: objects
           resource_type: storage_accounts
           resource_key: nsgflogs
           attribute_key: id
-        interval: 60
-        flowAnalyticsEnabled: true
+        interval: '60'
+        flowAnalyticsEnabled: 'true'
         logAnalytics:
           lz_key: management
           output_key: diagnostics
@@ -311,15 +311,15 @@ archetype_definitions:
       Enforce-TLS-SSL:
       CAF-Deploy-Nsg-FlowLogs:
         effect: DeployIfNotExists
-        retention: 5
+        retention: '5'
         storageAccountResourceId: 
           lz_key: management
           output_key: objects
           resource_type: storage_accounts
           resource_key: nsgflogs
           attribute_key: id
-        interval: 60
-        flowAnalyticsEnabled: true
+        interval: '60'
+        flowAnalyticsEnabled: 'true'
         logAnalytics:
           lz_key: management
           output_key: diagnostics
@@ -408,15 +408,15 @@ archetype_definitions:
     policy_assignments:
       CAF-Deploy-Nsg-FlowLogs:
         effect: DeployIfNotExists
-        retention: 5
+        retention: '5'
         storageAccountResourceId: 
           lz_key: management
           output_key: objects
           resource_type: storage_accounts
           resource_key: nsgflogs
           attribute_key: id
-        interval: 60
-        flowAnalyticsEnabled: true
+        interval: '60'
+        flowAnalyticsEnabled: 'true'
         logAnalytics:
           lz_key: management
           output_key: diagnostics

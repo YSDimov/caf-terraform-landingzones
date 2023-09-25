@@ -1,0 +1,16 @@
+{
+  "exclude_platform_connectivity": {
+      "policy_assignments": [
+          "Enable-DDoS-VNET"
+      ],
+      "policy_definitions": [],
+      "policy_set_definitions": [
+        "CAF-network-vhub-peering"
+      ],
+      "role_definitions": [],
+      "archetype_config": {
+          "parameters": {},
+          "access_control": {}
+      }
+  }
+}

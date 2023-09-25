@@ -328,7 +328,7 @@ management_groups:
       deploy_core_landing_zones: {{bootstrap.management_groups[region].es.deploy_core_landing_zones | default(True)}}
       clean_up_destination_folder: {{bootstrap.management_groups[region].es.clean_up_destination_folder | default(True)}}
       update_lib_folder: {{bootstrap.management_groups[region].es.update_lib_folder | default(True)}}
-      version_to_deploy: "{{bootstrap.management_groups[region].es.version_to_deploy | default('v1.1.3')}}"
+      version_to_deploy: "{{bootstrap.management_groups[region].es.version_to_deploy | default('v2.1.0')}}"
 {% if bootstrap.management_groups[region].es.root_parent_id is defined %}
       root_parent_id: "{{bootstrap.management_groups[region][key].root_parent_id}}"
 {% endif %}

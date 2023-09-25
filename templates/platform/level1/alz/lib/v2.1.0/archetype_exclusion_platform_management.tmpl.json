@@ -1,0 +1,15 @@
+{
+  "exclude_platform_management": {
+      "policy_assignments": [
+          "Deploy-Log-Analytics",
+          "Deny-Private-DNS-Zones"
+      ],
+      "policy_definitions": [],
+      "policy_set_definitions": [],
+      "role_definitions": [],
+      "archetype_config": {
+          "parameters": {},
+          "access_control": {}
+      }
+  }
+}
