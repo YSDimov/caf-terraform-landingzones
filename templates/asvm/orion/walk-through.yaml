@@ -9,6 +9,7 @@
     - name: landingzone_definition
       prompt: Name of the landingzone group definition (no spaces)
       private: no
+      default: deletemenow
 
     - name: scale_out_domains_input
       prompt: List of the scale-out domains. Will create one landingzone per domain.
@@ -38,7 +39,7 @@
     - set_fact:
         scale_out_domains: "{{scale_out_domains_input.split(',') }}"
         platform_domain_mapping: "{{platform_domain_mapping_input}}"
-        subscription_id: "{{subscription_id_cmd.stdout}}"
+        subscription_id: "{{subscription_id_cmd.stdout | default('null')}}"
       
     - name: Get template files
       register: asvm_files
@@ -65,6 +66,12 @@
         src: "{{item.path}}"
         dest: "{{template_folder}}/{{ item.path | basename }}"
       loop: "{{asvm_files.files}}"
+
+    - debug:
+        msg: 
+        - "topology_folder: {{topology_folder}}"
+        - "template_folder: {{template_folder}}"
+        - "platform_domain_mapping: {{platform_domain_mapping}}"
 
     - name: Save parameters
       ansible.builtin.template:
